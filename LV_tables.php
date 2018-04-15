@@ -672,7 +672,7 @@ function tbl_reports()
 
 
 global $conn;
-
+$total='';
 if(isset($_POST['SEAR']))
 {
   $xQx_select = "SELECT * FROM  reportsclientorder WHERE date_paid between '".$_POST['SDT']."' AND '".$_POST['EDT']."' AND isDeleted='0' ";
@@ -699,7 +699,9 @@ else
               <td>$row[0]</td>
               <td>$row[4]</td>
           
-              <td>$row[7]</td>              
+              <td>$row[7]</td> 
+
+
               <td>$row[8]</td>
               <td>$row[9]</td>
               <td>$row[10]</td>
@@ -848,15 +850,126 @@ else
     </div>
   </div>";  
 
+$total[].=$row[7];
+
             }
             ?>
             
           
             </tbody>
           </table>
+
+
+
   <?php 
+   echo "<hr><div style='float:right;cursor:default;margin-right:30px;' class='btn btn-primary btn-flat' disabled> TOTAL ". array_sum($total)."</div>";
 } 
 
+?>
+
+<?php
+function tbl_receivables()
+{
+  ?>
+
+  <form method="POST" action="admin.php?x=RECEIVABLES">
+ <div class="row">
+
+ <div class="col-md-6">
+
+ <div class='input-group margin'>
+                  <div class='input-group-btn'>
+                  <button type='button' class='btn btn-block btn-primary btn-flat size-125px'>Date Start</button>
+                  </div>
+                  <input type='date' class='form-control'  name="SDT">
+  </div>
+  </div>
+
+  <div class="col-md-6">
+ <div class='input-group margin'>
+                  <div class='input-group-btn'>
+                  <button type='button' class='btn btn-block btn-primary btn-flat size-125px'>Date End</button>
+                  </div>
+                  <input type='date' class='form-control'  name="EDT">
+  </div>
+  </div>
+
+
+  <div class="row">
+
+<div class="col-md-12">
+<button type='submit' class='btn btn-block btn-success btn-flat ' name="SEAR">Search</button>
+</div>
+</div>
+            </form>      
+                  
+ 
+  <br>
+<!--   <table id="ManageSupplier" class="display" cellspacing="0" width="100%"> -->
+  <table id="RECEIVABLES" class="ui celled table" cellspacing="0" width="100%">
+          <thead>
+              <tr>
+                  <th>Invoice ID</th>
+                  <th>Client Name</th>
+                  <th>Sell Price</th>
+                  <th>Handled By</th>
+                  <th>Date Added</th>
+
+
+              </tr>
+          </thead>
+          <tbody>
+            <?php  
+
+
+global $conn;
+$total='';
+if(isset($_POST['SEAR']))
+{
+  $xQx_select = "SELECT i.`invoiceId`,i.`assetName`,i.`sellprice`,i.`handledBy`,i.`dateadded` FROM items_ordered i LEFT JOIN invoices a ON a.`invoiceId`=i.`invoiceId` WHERE NOT a.`Status`='2' AND i.`isDeleted`='0' AND dateadded between '".$_POST['SDT']."' AND '".$_POST['EDT']."'  ";
+}
+else
+{
+  $xQx_select = "SELECT i.`invoiceId`,i.`assetName`,i.`sellprice`,i.`handledBy`,i.`dateadded` FROM items_ordered i LEFT JOIN invoices a ON a.`invoiceId`=i.`invoiceId` WHERE NOT a.`Status`='2'  AND i.`isDeleted`='0'" ;
+}
+ 
+  $query_select=mysqli_query($conn,$xQx_select);         
+
+
+       while($row=mysqli_fetch_array($query_select))
+
+{
+
+
+/*              $SeeModal="SeeModal".$row[0];*/
+              $EditModal="EditModal".$row[0];
+              $DeleteModal="DeleteModal".$row[0];
+              $PrintModal = "PrintModal".$row[0];     
+              echo" 
+              <tr>
+              <td>$row[0]</td>
+              <td>$row[1]</td>
+          
+              <td>$row[2]</td>              
+              <td>$row[3]</td>
+              <td>$row[4]</td>
+
+              </tr>";
+
+              $total[].=$row[2];
+}
+            ?>
+            
+          
+            </tbody>
+          </table>
+
+
+
+  <?php 
+
+  echo "<hr><div style='float:right;cursor:default;margin-right:30px;' class='btn btn-primary btn-flat' disabled> TOTAL ". array_sum($total)."</div>";
+} 
 
 
 
@@ -1508,7 +1621,7 @@ frm_add_itemsinvo();
           </div>
         </div>
         <div class='modal-footer'>
-                          <button type='submit' name='delInvoice'  class='btn btn-success'>Yes</button>
+                          <button type='submit' name='delgenInvoice'  class='btn btn-success'>Yes</button>
                           <button type='button' class='btn btn-danger' data-dismiss='modal'>No</button>
         </form>
         </div>
@@ -1809,7 +1922,7 @@ function tbl_invoice_paid()
               </td>
               </tr>';
 
-/*  echo "   
+  echo "   
   <div id='".$ViewItemModal."' class='modal fade'>
     <div class='modal-dialog'>
       <div class='modal-content'>
@@ -1821,36 +1934,15 @@ function tbl_invoice_paid()
 
 ";
 
-?>
-<script>$(document).ready(function(){
-    $('#table_items_orders').DataTable({} );
-});</script>
-<table id="table_items_orders">
-  
+$_SESSION['viewinvo']=$row[0];
 
-<thead>
-              <tr>
-                
-                     
-              </tr>
-          </thead>
-<tbody>
-<tr>
-<td>BAKIT</td>
-<td>andito TO</td>
-</tr>
-</tbody>
-
-</table>
-
-<?php
-
-echo "
+frm_view_itemsinvo();
+echo ";
         </div>
       </div>
     </div>
   </div>";
-*/
+
   echo "   
   <div id='".$AddItemModal."' class='modal fade'>
     <div class='modal-dialog'>

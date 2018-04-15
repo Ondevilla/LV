@@ -386,6 +386,17 @@ function delInvoice($a)
   return  $query;
 }
 
+function delgenInvoice($a)
+{
+  global $conn;
+  $xQx = "UPDATE invoices ";
+  $xQx .=  "SET isDeleted = 1 ";
+  $xQx .=  "WHERE invoiceId='$a'";
+  $query=mysqli_query($conn,$xQx);
+  return  $query;
+}
+
+
 function addClient($a,$b,$c,$d,$e,$f,$g,$h,$i,$j,$k,$l,$m,$n,$o)
 {
   global $conn;

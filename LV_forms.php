@@ -488,6 +488,62 @@ function frm_edit_supplier()
 
 }
 
+function frm_view_itemsinvo()
+
+{
+
+
+?>
+
+<div class="row">
+  <div class="col-md-3">
+    Asset Name
+  </div>
+  <div class="col-md-3">
+    Sell Price
+  </div>
+  <div class="col-md-3">
+    Handled
+  </div>
+  <div class="col-md-3">
+    Date Added
+  </div>
+</div>
+
+<?php
+ $x=$_SESSION['viewinvo'];
+    global $conn;
+$quermont=mysqli_query($c1,"SELECT * FROM items_ordered WHERE invoiceId= '$x' and isDeleted='0'"); 
+while ($row=mysqli_fetch_array($quermont)) {
+
+
+
+
+
+
+  ?>
+<div class="row">
+  <div class="col-md-3">
+    <?php echo $row[2];?>
+  </div>
+  <div class="col-md-3">
+  <?php echo $row[5];?>
+  </div>
+  <div class="col-md-3">
+      <?php echo $row[7];?>
+  </div>
+  <div class="col-md-3">
+  <?php echo $row[0];?>
+  </div>
+</div>
+<?php
+}
+
+}
+
+
+
+
 function frm_add_itemsinvo()
 
 {

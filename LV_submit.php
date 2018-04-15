@@ -590,6 +590,17 @@ delInvoice($_POST['InvoiceId']);
 <?php
 }
 
+if (isset($_POST['delgenInvoice']))
+{
+//-----------------------------------------------
+delgenInvoice($_POST['InvoiceId']);
+//-----------------------------------------------
+    ?>
+    <script>   
+    window.location.href="admin.php?x=GENERATED%20INVOICE";
+    </script>
+<?php
+}
 
 if (isset($_POST['addItems_invoice']))
 {
@@ -627,7 +638,7 @@ if (isset($_POST['addItems_invoice']))
 
         $rowup=mysqli_fetch_array(mysqli_query($conn,'SELECT unitPrice,serialName FROM assetstwo  WHERE assetsId="'.$SerN[$i].'" '));
 
-        $xQx_insert = "INSERT INTO items_ordered (assetsId,assetName,  unitPrice, sellPrice, invoiceId,isDeleted,dateadded) VALUES ('$SerN[$i]','$rowup[1]','$rowup[0]','$sell','$invoiceId_submit','0','$D')";
+        $xQx_insert = "INSERT INTO items_ordered (assetsId,assetName,  unitPrice, sellPrice, invoiceId,isDeleted,dateadded,`quantity`,handledBy) VALUES ('$SerN[$i]','$rowup[1]','$rowup[0]','$sell','$invoiceId_submit','0','$D','1','".$_SESSION['fn']."')";
         $query_insert=mysqli_query($conn,$xQx_insert);
 
         }

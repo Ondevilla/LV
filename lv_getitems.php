@@ -51,6 +51,7 @@ while($rowsss=mysqli_fetch_array($query_invoice))
 ;
   $sellpricesss=$rowsss[2];
   $_SESSION['unitprice']=$rowsss[2];
+
 $namaiwa+=1;
 }
 
@@ -60,11 +61,21 @@ $_SESSION['SN']=$namaiwa;
 
 ?>
      
+ 
+ <div class="input-group margin">
+                  <div class="input-group-btn">
+                    <button type="button" class="btn btn-block btn-primary btn-flat size-125px">Sell Price</button>
+                  </div>
+          <input type='text' class='form-control'  name='Sell' readonly   style="cursor:default;" value="<?php echo $sellpricesss; ?>">
+    </div>
+
+
+
      <div class="input-group margin">
                   <div class="input-group-btn">
                     <button type="button" class="btn btn-block btn-primary btn-flat size-125px">Total Price</button>
                   </div>
-        <input type='text' class='form-control'  name='Sell' id="chk" readonly   style="cursor:default;">
+        <input type='text' class='form-control'  name='Selling' id="chk" readonly   style="cursor:default;">
     </div>
 
 

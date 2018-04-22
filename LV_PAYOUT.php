@@ -140,16 +140,11 @@ if(isset($_POST["invoice_paid"]))
 
     $get_value = $_POST["invoice_paid"];
 
-$xQx_update = "UPDATE invoices SET Status = '2' WHERE invoiceId = '$get_value'";
- $query_update=mysqli_query($conn,$xQx_update);
-
-
-?>
+// $xQx_update = "UPDATE invoices SET Status = '2' WHERE invoiceId = '$get_value'";
+//  $query_update=mysqli_query($conn,$xQx_update);
 
 
 
-
-    <?php 
 
 
 
@@ -310,7 +305,7 @@ $cName = $_SESSION["cName"];
   
               <th>Product</th>
               <th>Serial #</th>
-              <th>Subtotal</th>
+              <th>Amount</th>
             </tr>
             </thead>
             <tbody>
@@ -319,7 +314,8 @@ $cName = $_SESSION["cName"];
 
 
             <?php 
- $xQx_items_ordered = "SELECT * FROM items_ordered WHERE invoiceId = $invoice_id AND isDeleted = '0'";
+ $xQx_items_ordered = "SELECT g.`groupName`,a2.`serialName`,g.`sellPrice` FROM assetstwo a2 INNER JOIN groups g ON g.`groupid`=a2.`itmTypeId` INNER JOIN items_ordered id ON id.`assetName`=a2.`serialName` INNER JOIN invoices i ON i.`invoiceId` = id.`invoiceId` WHERE i.`invoiceId`='".  $get_value ."' AND id.`isDeleted`='0'  GROUP BY a2.`serialName`;
+";
   $query_items_ordered=mysqli_query($conn,$xQx_items_ordered);         
 
 
@@ -330,8 +326,8 @@ $cName = $_SESSION["cName"];
             <tr>
 
             
-              <td><?php echo $row["assetName"]; ?></td>
-              <td><?php echo $row["assetsId"]; ?></td>
+              <td><?php echo $row["groupName"]; ?></td>
+              <td><?php echo $row["serialName"]; ?></td>
               <td><?php echo number_format($row["sellPrice"]); ?></td>
             </tr>
 
@@ -385,24 +381,36 @@ $sp="";
                       while($row=mysqli_fetch_array($query_sellprice))
 
                       {  
-                        ?>
- <tr>                       
- <th style="width:50%">Subtotal:</th>
-<td><?php $row["sellPrice"] ; 
+
 
 
 $sp[].=$row["sellPrice"];
 
-$spri=array_sum($sp);
-echo number_format($spri);
 
-?></td>
-</tr>
-<?php
+
+
 }
 
+$spri=array_sum($sp);
+?>
+  
+ <tr>                       
+ <th style="width:50%">Subtotal:</th>
+<td><?php echo number_format($spri); ?></td>
+
+
+</td>
+</tr>
+<?php
+
+
+
+
+
+
+
 $checkVat_new = $_SESSION["checkVat"];
-if($checkVat_new = "Vatable")
+if($checkVat_new ==  "Vatable")
 
 {
 
@@ -441,7 +449,7 @@ $tot=array_sum($sp);
              
 
                 
-                  $totx =  $tot + ($tot* $tax_value);
+                  $totx =  $tot ;
                 echo number_format($totx);
                 ?></th>
 

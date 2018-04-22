@@ -83,6 +83,8 @@ input::-webkit-inner-spin-button {
 <script>
 $(document).ready(function(){
     $('#ManageReport').DataTable({
+      "searching":false,
+      "lengthChange": false,
       "aoColumns": [
           null,
           null,
@@ -125,7 +127,6 @@ $(document).ready(function(){
 <?php
 tbl_reports();
 ?>
-
 
 
 

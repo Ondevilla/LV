@@ -136,10 +136,13 @@ frm_add_groups();
 <br>
 <br>
 
+<div class="box box-primary" style="padding: 20px;">
+
 <?php
 tbl_groups();
 ?>
 
+</div>
 
 
 

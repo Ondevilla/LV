@@ -1,6 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>LIGHTVEND | LOGIN</title>
+
+
+  <script type="text/javascript" src="sm/dist/sweetalert.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="sm/dist/sweetalert.css"/>
+</head>
+<body>
+
+
 <?php 
 include('connect.config.php');
 include('support/function.php');
+
 session_start();
 
 if(isset($_POST["Login"]))
@@ -19,44 +32,59 @@ $search=mysqli_fetch_assoc($row);
 
   $_SESSION["access"] = $search["accessright"];
 
-  if (!empty($search) && ($search['accessright']==1))
+  if (!empty($search) )
   {
 
 
 ?> 
 
 
-<script>
+<script type="text/javascript">
 
+    swal({
+                  title: "Success !",
+                  text: "Successfully Logged in !",
+                  type: "success",
+                  closeOnConfirm: false,
+                  showLoaderOnConfirm: true
+                },
+                function(){
+                  setTimeout(function(){
+                    
 window.location.href="admin.php?x=";
+                    }, 1000);
+              
+                });
+
 
 </script>
 
 <?php
   }
-   elseif (!empty($search) && ($search['accessright']==2))
-  {
-
-?> 
-
-
-<script>
-
-window.location.href="admin.php?x=";
-
-</script>
-
-<?php
-  }
+ 
 
 
   else
   {
   	?>
 
-  	<script>
+  	<script type="text/javascript">
 
+  swal({
+                  title: "Failed !",
+                  text: "Logged in failed !",
+                  type: "error",
+                  closeOnConfirm: false,
+                  showLoaderOnConfirm: true
+                },
+              function(){
+                  setTimeout(function(){
+                    
 window.location.href="admin_login.php";
+                    }, 1000);
+              
+                });
+
 
 </script>
   	<?php
@@ -70,3 +98,6 @@ window.location.href="admin_login.php";
 
 
 ?>
+
+</body>
+</html>

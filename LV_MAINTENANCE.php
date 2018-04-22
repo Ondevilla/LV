@@ -18,8 +18,14 @@
 
 <div class="collapse col-md-11" id="busType">
 <br>
+<div class="box box-primary" style="padding:20px;">
+   <p>Add Business Type</p>
   <form  role="form" action="LV_submit.php" method="post"   enctype="multipart/form-data" >
   <div class="row">
+
+
+
+
     <div class="col-md-12">
       <div class="input-group margin">
                   <div class="input-group-btn">
@@ -34,6 +40,16 @@
 
 
 </form>
+<BR>
+<br>
+</div>
+
+
+<br>
+
+<div class="box box-danger" style="padding:20px;">
+  <p>Delete Business Type</p>
+
   <form  role="form" action="LV_submit.php" method="post"   enctype="multipart/form-data" >
   <div class="row">
     <div class="col-md-12">
@@ -68,6 +84,10 @@
 
 </form>
 
+<BR>
+<br>
+</div>
+
 
 
     <p></p>
@@ -90,6 +110,8 @@
 
 <div class="collapse col-md-11" id="categType">
 <br>
+<div class="box box-primary" style="padding:20px;">
+     <p>Add Category Type</p>
   <form  role="form" action="LV_submit.php" method="post"   enctype="multipart/form-data" >
   <div class="row">
     <div class="col-md-12">
@@ -107,6 +129,13 @@
 
 </form>
 
+<BR>
+<br>
+</div>
+
+<br>
+<div class="box box-danger" style="padding:20px;">
+     <p>Delete Category Type</p>
 
   <form  role="form" action="LV_submit.php" method="post"   enctype="multipart/form-data" >
   <div class="row">
@@ -141,7 +170,9 @@
 
 
 </form>
-
+<BR>
+<br>
+</div>
 
 </div>
              

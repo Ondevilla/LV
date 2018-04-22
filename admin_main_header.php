@@ -46,14 +46,48 @@
 
                                   $x1="";
                                   $x11[]="";
+
+
+
+
+       $query=mysqli_query($conn,"SELECT groupid FROM groups");
+
+
+        while ($row=mysqli_fetch_array($query)) 
+        {
+
+
+              $query1=mysqli_query($conn,"SELECT g.`groupName`,COUNT(a.`itmTypeId`),g.`critical` FROM groups AS g LEFT JOIN assetstwo AS a  ON g.`groupid`=a.`itmTypeId` WHERE a.`status`='available' AND g.`groupid`='".$row[0]."'");
+                   while ($row1=mysqli_fetch_array($query1)) 
+                   {
+                               if( $row1[1]<=$row1[2])
+                                  {
+
+                          $x1+=1;
+                          $x11[].=$row1[0];
+
+
+                                  }
+                                      else
+                                  {
+
+                                  }
+                   }
+
+        }
+/*
+//SELECT COUNT(a.itmTypeId) AS stock,g.critical,g.groupName
+  
+//FROM assetstwo AS a RIGHT JOIN groups AS g ON a.itmTypeId=g.groupid GROUP BY  a.itmTypeId                                  
                                   $query=mysqli_query($conn,"
-
-
 
 
 SELECT COUNT(a.itmTypeId) AS stock,g.critical,g.groupName
   
-FROM assetstwo AS a RIGHT JOIN groups AS g ON a.itmTypeId=g.groupid GROUP BY  a.itmTypeId
+FROM assetstwo AS a RIGHT JOIN groups AS g ON a.itmTypeId=g.groupid  GROUP BY  g.groupid
+
+
+
 
 
                                     ");
@@ -66,22 +100,19 @@ FROM assetstwo AS a RIGHT JOIN groups AS g ON a.itmTypeId=g.groupid GROUP BY  a.
    END AS answer
 FROM assetstwo AS a GROUP BY  itmTypeId */
 
-                                  while ($row=mysqli_fetch_array($query)) {
-                                  if( $row[0]<=$row[1])
-                                  {
+//                                   while ($row=mysqli_fetch_array($query)) {
+//                                   if( $row[0]<=$row[1])
+//                                   {
 
-$x1+=1;
-$x11[].=$row[2];
+// $x1+=1;
+// $x11[].=$row[2];
 
 
-                                  }
+//                                   }
 
-                                  else
-                                  {
+                              
 
-                                  }
-
-                                  }
+                                  
 echo ' <span class="label label-danger">'.$x1.'</span>';
 
                                   ?>

@@ -150,11 +150,11 @@ frm_add_account();
 
 <br>
 <br>
-
+<div class="box box-primary" style="padding: 20px;">
 <?php
 tbl_accounts();
 ?>
-
+</div>
 
 </div>
 

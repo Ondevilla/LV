@@ -1,9 +1,6 @@
 <div class="wrapper" style="background-color:transparent;">
 
-
-
-
-<div><p></p></div>
+<div><p>GENERATED INVOICES</p></div>
 
 <style>
   .switch {
@@ -91,6 +88,7 @@ $(document).ready(function(){
 
           null,
           null, 
+            null, 
           { "orderSequence": [ "" ] }
         
       ]
@@ -133,12 +131,13 @@ $(document).ready(function(){
 <br>
 <br>
 
+<div class="box box-primary" style="padding: 20px;">
 <?php
 tbl_invoice_generated();
 ?>
 
 
-
+</div>
 
 </div>
 

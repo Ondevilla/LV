@@ -3,17 +3,7 @@
 <div><p>MANAGE CLIENTS</p></div>
 
 <style>
-  .switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-  background-color:#3c8dbc;
-  border-color:#367fa9;
-  
-}
 
-/* Hide default HTML checkbox */
 .switch input {display:none;}
 
 /* The slider */
@@ -43,6 +33,7 @@
 
 input:checked + .slider {
   background-color: #2196F3;
+
 }
 
 input:focus + .slider {
@@ -54,7 +45,6 @@ input:checked + .slider:before {
   -ms-transform: translateX(26px);
   transform: translateX(26px);
 }
-
 /* Rounded sliders */
 
 #panel {
@@ -79,7 +69,8 @@ input::-webkit-inner-spin-button {
 
 </style>
   
-
+ <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script> 
 <script>
 $(document).ready(function(){
     $('#ManageClients').DataTable({
@@ -121,11 +112,12 @@ frm_add_client();
 
 <br>
 <br>
-
+<div class="box box-primary" style="padding: 20px;">
 <?php
 tbl_client();
 ?>
 
+</div>
 
 
 

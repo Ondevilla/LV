@@ -4,13 +4,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>LIGHTVENT | DASHBOARD</title>
 
-
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
  </script>
   <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css"/> -->
   <!-- <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script> -->
-  
-  
+
   <!-- Semantic -->
   <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css"/>
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.semanticui.min.css"/>
@@ -31,7 +30,7 @@
     
 
   <!-- Tell the browser to be responsive to screen width -->
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
@@ -48,3 +47,24 @@
         
 
 </head>
+  <?php 
+if(empty($_SESSION['fn']))
+{
+  ?>
+  <script type="text/javascript">
+       swal({
+      title: "ERROR 404 . . .",
+      text: "NOTHING SPECIAL",
+    
+
+  
+        timer: 2000,
+        showConfirmButton: false
+      },  function(){
+                  setTimeout(function(){
+                    window.location.href='admin_login.php';
+                      });
+                });
+    </script>
+  <?php
+}

@@ -1,5 +1,14 @@
 
+<html>
+<head>
+    <title>LIGHTVEND | PROCESS</title>
 
+
+  <script type="text/javascript" src="sm/dist/sweetalert.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="sm/dist/sweetalert.css"/>
+
+</head>
+<body>
 <?php 
 
 include('LV_queries.php'); 
@@ -19,22 +28,74 @@ if(isset($_POST["generate_invoice"]))
     
 
     $get_value = $_POST["generate_invoice"];
-$get_value;
+
+
+$sql = "SELECT * FROM items_ordered WHERE invoiceId = '".$get_value."' and isDeleted='0'  ";
+$res = mysqli_query($conn,$sql);
+$num_row = mysqli_num_rows($res);
+if(empty($num_row))
+{
+
+
+?>
+<script>   
+   
+
+
+       swal({
+                  title: "Invoice !",
+                  text: "Invoice does not contain any items !",
+                  type: "error",
+                  closeOnConfirm: false,
+                  showLoaderOnConfirm: true
+                },
+
+
+                function(){
+                  setTimeout(function(){
+                      window.location.href='admin.php?x=NEW%20INVOICE';
+                    }, 1000);
+                });
+</script>
+<?php
+
+}
+
+
+else
+{
+
 
 $xQx_update = "UPDATE invoices SET Status = '1' WHERE invoiceId = '$get_value'";
  $query_update=mysqli_query($conn,$xQx_update);
 
-
-?>
-
-    <script>   
-    window.location.href="admin.php?x=NEW%20INVOICE";
-    </script>
+  
+  ?>
+ <script>   
 
 
+       swal({
+                  title: "Invoice !",
+                  text: "Successfully generate an invoice !",
+                  type: "success",
+                  closeOnConfirm: false,
+                  showLoaderOnConfirm: true
+                },
 
 
-    <?php 
+                function(){
+                  setTimeout(function(){
+                      window.location.href='admin.php?x=NEW%20INVOICE';
+                    }, 1000);
+                });
+</script>
+   
+
+
+    <?php  
+}
+
+
 
 
 
@@ -52,36 +113,6 @@ $xQx_update = "UPDATE invoices SET Status = '1' WHERE invoiceId = '$get_value'";
 
 
 
-if(isset($_POST["invoice_paid"]))
-
-{
-    
-
-    $get_value = $_POST["invoice_paid"];
-
-$xQx_update = "UPDATE invoices SET Status = '2' WHERE invoiceId = '$get_value'";
- $query_update=mysqli_query($conn,$xQx_update);
-
-
-?>
-
-
-
-
-
-    <script>   
-    window.location.href="admin.php?x=GENERATED%20INVOICE";
-    </script>
-
-
-
-
-    <?php 
-
-
-
-
-}
 
 
 
@@ -91,3 +122,6 @@ $xQx_update = "UPDATE invoices SET Status = '2' WHERE invoiceId = '$get_value'";
 
 
 ?>
+
+</body>
+</html>

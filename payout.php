@@ -14,6 +14,8 @@ $total_amount = $_POST["total_amount"];
 $get_user = $_SESSION["u_id"];
 
 
+ $xQx_update = "UPDATE invoices SET Status = '2' WHERE invoiceId = '$catch_invoiceId'";
+  $query_update=mysqli_query($conn,$xQx_update);
 
   $xQx_insert = "SELECT * FROM 	useraccount WHERE user_Id = '$get_user'";
   $query_insert=mysqli_query($conn,$xQx_insert);         
@@ -52,11 +54,22 @@ $get_user = $_SESSION["u_id"];
 
 
 
+  $que=mysqli_query($conn,"SELECT i.`assetName` FROM items_ordered i LEFT JOIN invoices a ON a.`invoiceId`=i.`invoiceId` WHERE i.`invoiceId`='".$catch_invoiceId."' AND i.`isDeleted`='0'");
+  while ($row=mysqli_fetch_array($que)) {
+        $xQx = "UPDATE assetstwo ";
+        $xQx .=  "SET status = 'pullout' ";
+        $xQx .=  "WHERE serialName='".$row[0]."'";
+        $query=mysqli_query($conn,$xQx);
+
+  }
+  
+
+
+
   $xQx_insertReport = "INSERT INTO reportsclientorder (invoiceId, invoiceStatId, clientId, clientName, bustypeId, bustypeName, total_amount, amount_paid, handledBy, date_paid) VALUES ('$invoiceId','$invoiceStatId','$clientId','$clientName','$bustypeId','$bustypeName','$total_amount','$paid_amount','$user_name','$date')";
   $query_insertReport=mysqli_query($conn,$xQx_insertReport);  
 
-  $xQx_update = "UPDATE invoices SET isDeleted = '1' WHERE invoiceId = '$catch_invoiceId'";
-  $query_update=mysqli_query($conn,$xQx_update);  
+
 
 ?> 
 
@@ -73,7 +86,7 @@ $get_user = $_SESSION["u_id"];
 
 
     <script>   
-    window.location.href="admin.php?x=SALES%20INVOICES";
+    window.location.href="admin.php?x=PAID%20INVOICE";
     </script> 
 
 

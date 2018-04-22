@@ -1,7 +1,9 @@
 <?php  
+  ob_start();
 include("connect.config.php");
+
 require('fpdf17/fpdf.php');
-session_start();
+
 $invoiceId = $_POST["invoiceId"];
 
   $date = date('Y-m-d');
@@ -30,7 +32,7 @@ $pdf->Cell(34 ,5,$date,0,1);//end of line
 
 
 
-  $xQx_clientId = "SELECT * FROM invoices WHERE invoiceId = '$invoiceId'";
+  $xQx_clientId = "SELECT * FROM invoices WHERE invoiceId = '$invoiceId' ";
   $query_clientId=mysqli_query($conn,$xQx_clientId);         
 
 
@@ -62,7 +64,7 @@ $pdf->Cell(34 ,5,$date,0,1);//end of line
 
 
 
-          if($tax="Vatable")
+          if($tax=="Vatable")
 
           {
 
@@ -129,18 +131,20 @@ $pdf->SetFont('Arial','',12);
 //Numbers are right-aligned so we give 'R' after new line parameter
 
 $sp="";
-  $xQx_items = "SELECT * FROM 	items_ordered WHERE invoiceId = '$invoiceId'";
+   $xQx_items = "SELECT g.`groupName`,a2.`serialName`,g.`sellPrice` FROM assetstwo a2 INNER JOIN groups g ON g.`groupid`=a2.`itmTypeId` INNER JOIN items_ordered id ON id.`assetName`=a2.`serialName` INNER JOIN invoices i ON i.`invoiceId` = id.`invoiceId` WHERE i.`invoiceId`='".$invoiceId."'    AND id.`isDeleted`='0' GROUP BY a2.`serialName` ";
   $query_items=mysqli_query($conn,$xQx_items);         
 
 
                       while($row=mysqli_fetch_array($query_items))
 
 {
-$sp[].=$row["sellPrice"]*$row["quantity"];
-$pdf->Cell(100 ,5,$row["assetName"],1,0);
-$pdf->Cell(55 ,5,$row["assetsId"],1,0);
 
-$pdf->Cell(34 ,5,number_format($sp[].=$row["sellPrice"]),1,1,'R');//end of line
+  
+$sp[].=$row["sellPrice"];
+$pdf->Cell(100 ,5,$row["groupName"],1,0);
+$pdf->Cell(55 ,5,$row["serialName"],1,0);
+
+$pdf->Cell(34 ,5,number_format($row["sellPrice"]),1,1,'R');//end of line
 
 }
 
@@ -152,7 +156,7 @@ $pdf->Cell(189 ,10,'',0,1);
 
 
  $toxy =$tot* $tax_value;
- $totx =  $tot + ($tot* $tax_value);
+ $totx =  $tot ;
 
 //summary
 $pdf->Cell(130 ,5,'',0,0);
@@ -173,4 +177,5 @@ $pdf->Cell(4 ,5,'P',1,0);
 $pdf->Cell(30 ,5,number_format($totx),1,1,'R');//end of line
 //output the result
 $pdf->Output();
+  ob_end_flush(); 
 ?>

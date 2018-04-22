@@ -17,6 +17,26 @@
 
 <?php 
 
+if(empty($_SESSION['fn']))
+{
+  ?>
+  <script type="text/javascript">
+       swal({
+      title: "ERROR 404 . . .",
+      text: "NOTHING SPECIAL",
+    
+
+  
+        timer: 2000,
+        showConfirmButton: false
+      },  function(){
+                  setTimeout(function(){
+                    window.location.href='admin_login.php';
+                      });
+                });
+    </script>
+  <?php
+}
 
 
 

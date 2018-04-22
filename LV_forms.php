@@ -273,7 +273,7 @@ function frm_add_supplier()
       
     <div style="margin:10px;">
 
-      <input type="checkbox" data-width="100%" data-height="20" data-toggle="toggle" name="Supplier_j" value="1" data-on="Active" data-off="Not Active">
+      <input type="checkbox" data-width="100%" data-height="30" data-toggle="toggle" name="Supplier_j" value="1" data-on="Active" data-off="Not Active">
     </div>
   </div>
   </div>
@@ -513,7 +513,7 @@ function frm_view_itemsinvo()
 <?php
  $x=$_SESSION['viewinvo'];
     global $conn;
-$quermont=mysqli_query($c1,"SELECT * FROM items_ordered WHERE invoiceId= '$x' and isDeleted='0'"); 
+$quermont=mysqli_query($conn,"SELECT * FROM items_ordered WHERE invoiceId= '$x' and isDeleted='0'"); 
 while ($row=mysqli_fetch_array($quermont)) {
 
 
@@ -543,74 +543,6 @@ while ($row=mysqli_fetch_array($quermont)) {
 
 
 
-
-function frm_add_itemsinvo()
-
-{
-
-?>
-
-<script>
-  
-
-function getState(val) {
-    $.ajax({
-    type: "POST",
-    url: "lv_getitems.php",
-    data:'positionname='+val,
-    success: function(data){
-        $("#item_stock").html(data);
-    }
-    });
-}
-
-</script>
-  <div class="divider"></div>
-
-
-
-
-      <div class="input-group margin">
-                  <div class="input-group-btn">
-                    <button type="button" class="btn btn-block btn-primary btn-flat size-125px">Item</button>
-                  </div>
-                
-              <select name="items_a"  class="form-control" onChange="getState(this.value)" required >
-                 <option value=" " Selected> </option>
-                 <?php $xQx=getItems();
-                 
-                      while($row=mysqli_fetch_array($xQx))
-
-                      { 
-                        echo "
-
-                        <option value='".$row[0]."' >".$row[1]."</option>
-                        ";
-                      }
-                 ?>
-              
-              </select>
-      </div>
-
-     <!--   <input type='text' class='form-control'  name='Client_m'  value='".$row[13]."> -->
-       <div id="item_stock">
-
-</div>
-
-   
-
-
-
-
-<br><br>
-
-
-
-
-
-
-<?php
-}
 
 function frm_edit_client_a()
 {
@@ -811,32 +743,48 @@ function frm_edit_client_a()
                   
       </div>
     </div>
-    <div class="col-md-3">
-    <div style="margin:10px;">
-                    <button type="button" class="btn btn-block btn-primary btn-flat size-125px">isActive</button>
-    </div>
-    </div>
-    <div class="col-md-3">
-    <div class="input-group margin">
-      <center>
-                  <label class="switch">
-                
+     <div class="col-md-6">
+
+    
+
+
+        <div style="padding-top: 10px;">
+        
                     <?php 
+             
                     if($row[15]=='1')
                     {
-                        echo '<input type="checkbox" checked name="Client_o" value="1" >';
+                       ?>
+
+                      <select name="Client_o"  class="form-control"  >
+                   
+                        
+                        <option value="1" selected>Active</option>
+                        <option value="0" >Not Active</option>
+                
+                    </select>
+
+                       <?php
                     }
                     else
                     {
-                        echo '<input type="checkbox" name="Client_o" value="1" >';
+                      ?>
+                     <select name="Client_o"  class="form-control"  >
+                   
+                        
+                        <option value="1">Active</option>
+                        <option value="0" selected>Not Active</option>
+                
+                    </select>
+                      <?php
                     }
                     ?>
-                    <span class="slider"></span>
-                  </label>
-                 
-      </center>
-    </div>
-    </div>
+                        
+           
+                    
+        </div>
+        
+        </div>
   </div>
                 
 
@@ -1005,7 +953,7 @@ function frm_add_client()
   </div>
 
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-9">
       <div class="input-group margin">
                   <div class="input-group-btn">
                     <button type="button" class="btn btn-block btn-primary btn-flat size-125px">TAX Status</button>
@@ -1019,22 +967,17 @@ function frm_add_client()
                   
       </div>
     </div>
+  
+
     <div class="col-md-3">
+      
     <div style="margin:10px;">
-                    <button type="button" class="btn btn-block btn-primary btn-flat size-125px">isActive</button>
+
+      <input type="checkbox" data-width="100%" data-height="30" data-toggle="toggle" name="Client_o" value="1" data-on="Active" data-off="Not Active">
     </div>
-    </div>
-    <div class="col-md-3">
-    <div class="input-group margin">
-      <center>
-                  <label class="switch">
-                    <input type="checkbox" name="Client_o" value="1"  >
-                    <span class="slider"></span>
-                  </label>
-                 
-      </center>
-    </div>
-    </div>
+  </div>
+
+
   </div>
 
 
@@ -1363,7 +1306,7 @@ function frm_add_groups()
     <div class="col-md-12">
       <div class="input-group margin">
                   <div class="input-group-btn">
-                    <button type="button" class="btn btn-block btn-primary btn-flat size-125px">Category Name</button>
+                    <button type="button" class="btn btn-block btn-primary btn-flat size-125px">Group Name</button>
                   </div>
                   <input type="text" class="form-control"  name="groupa"  required>
       </div>
@@ -1492,7 +1435,10 @@ function frm_add_stocks()
                  <?php 
                  if (!empty($_SESSION['stock_c']))
                   {
-                 echo '<option value="'.$_SESSION['stock_c'].'" Selected>'.$_SESSION['stock_c'].' </option>';
+                      global $conn;
+                   $rowsup=mysqli_fetch_array( mysqli_query($conn,'SELECT supName FROM suppliers where supId="'.$_SESSION['stock_c'].'"' ));
+
+                 echo '<option value="'.$_SESSION['stock_c'].'" Selected>'. $rowsup[0].' </option>';
                   }
                   else
                   {
@@ -1526,7 +1472,8 @@ function frm_add_stocks()
                   <?php 
                  if (!empty($_SESSION['stock_d']))
                   {
-                 echo '<option value="'.$_SESSION['stock_d'].'" Selected>'.$_SESSION['stock_d'].' </option>';
+                     $rowgro=mysqli_fetch_array( mysqli_query($conn,'SELECT groupName FROM groups where groupid="'.$_SESSION['stock_d'].'"' ));
+                 echo '<option value="'.$_SESSION['stock_d'].'" Selected>'.$rowgro[0].' </option>';
                   }
                   else
                   {

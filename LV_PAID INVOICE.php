@@ -2,8 +2,9 @@
 
 
 
+<div><p>PAID INVOICES</p></div>
 
-<div><p></p></div>
+
 
 <style>
   .switch {
@@ -133,10 +134,11 @@ $(document).ready(function(){
 <br>
 <br>
 
+<div class="box box-primary" style="padding: 20px;">
 <?php
 tbl_invoice_paid();
 ?>
-
+</div>
 
 
 

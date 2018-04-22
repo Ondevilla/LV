@@ -1,7 +1,7 @@
 <div class="wrapper" style="background-color:transparent;">
 
 <div><p>MANAGE SUPPLIERS</p></div>
-<br>
+
 <style>
  th, td { white-space: nowrap; }
     div.dataTables_wrapper {
@@ -133,16 +133,19 @@ frm_add_supplier();
 </div>
 
 
-<br>
-<br>
 
+
+
+<br>
+<br>
+<div class="box box-primary" style="padding: 20px;">
 <?php
 tbl_supplier();
 ?>
 
 
 
-
+</div>
 
 </div>
 

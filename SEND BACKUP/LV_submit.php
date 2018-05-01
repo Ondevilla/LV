@@ -1,3 +1,26 @@
+
+
+
+<html>
+<head>
+    <title>LIGHTVEND | PROCESS</title>
+
+
+  <script type="text/javascript" src="sm/dist/sweetalert.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="sm/dist/sweetalert.css"/>
+
+</head>
+<body>
+    <script type="text/javascript">
+       swal({
+      title: "Please Wait . . .",
+      text: "Submitting a form please wait ",
+      type:'info',
+      
+        timer: 2000,
+        showConfirmButton: false
+      });
+</script>
 <?php 
 include('LV_queries.php'); 
 include('connect.config.php');
@@ -163,12 +186,17 @@ if (isset($_POST['addInvoice']))
 
 $a = $_POST['invoice_a'];
 $b = $_POST['invoice_b'];
-$c = $_POST['invoice_c'];
 $d = $_POST['invoice_d'];
 $e = $_POST['invoice_e'];
 $f = $_POST['invoice_f'];
+$dr = $_POST['invoice_dr'];
 
-  $xQx_get_cname = "SELECT * FROM clients WHERE clientId = '$b'";
+
+
+
+
+
+  $xQx_get_cname = "SELECT c.`clientName`,b.`busTypeId`,b.`busTypeName` FROM clients c INNER JOIN businesstypes b ON b.`busTypeId`=c.`busTypeId` WHERE c.`clientId` = '$b'";
   $query_get_cname=mysqli_query($conn,$xQx_get_cname);         
 
 
@@ -176,26 +204,15 @@ $f = $_POST['invoice_f'];
 
                       { 
 
-                        $get_cname = $row["clientName"];
-
-
-                      }
-
-  $xQx_get_bname = "SELECT * FROM businesstypes WHERE busTypeId = '$c'";
-  $query_get_bname=mysqli_query($conn,$xQx_get_bname);         
-
-
-                      while($row=mysqli_fetch_array($query_get_bname))
-
-                      { 
-
-                        $get_bname = $row["busTypeName"];
-
+                        $a1 = $row[0];
+$a2 = $row[1];
+$a3 = $row[2];
 
                       }
 
 
-$xQx = "INSERT INTO invoices(invoiceStatId , clientId, clientName, busTypeId, bustypeName, date_created ,due_date ,remarks ,isDeleted,Status)VALUES ('$a','$b','$get_cname','$c','$get_bname','$d','$e','$f','0','0')";
+
+$xQx = "INSERT INTO invoices(invoiceStatId , clientId, clientName, date_created ,due_date ,remarks ,isDeleted,Status,dr,bustypeName, bustypeId)VALUES ('$a','$b','$a1','$d','$e','$f','0','0','$dr','$a3','$a2')";
         $query=mysqli_query($conn,$xQx);
     }
 //-----------------------------------------------
@@ -493,7 +510,7 @@ if (isset($_POST['copysave']))
 
 
 $_SESSION['stock_a'] = $a = $_POST["stock_a"];
-$_SESSION['stock_b'] = $b = "";
+                       $b = $_POST["stock_b"];
 $_SESSION['stock_c'] = $c = $_POST["stock_c"];
 $_SESSION['stock_d'] = $d = $_POST["stock_d"];
 $_SESSION['stock_e'] = $e = $_POST["stock_e"];
@@ -568,7 +585,7 @@ if (isset($_POST['addstocks']))
 if (isset($_POST['delStock']))
 {
 //-----------------------------------------------
-delStock($_POST['stockId'],$_POST['reason']);
+delStock($_POST['stockId'],$_SESSION['fn']." : ".$_POST['reason']);
 //-----------------------------------------------
     ?>
     <script>   
@@ -744,3 +761,7 @@ $SerN[]="";
 
 
 ?>
+
+
+</body>
+</html>

@@ -19,17 +19,20 @@ function frm_add_invoice_item()
                   <div class="input-group-btn">
                     <button type="button" class="btn btn-block btn-primary btn-flat size-125px" >Invoice No.</button>
                   </div>
-                  <input type="number" class="form-control"  name="invoice_a" onKeyDown="if(this.value.length==20 && event.keyCode!=8) return false;"  required>
+                  <input type="number" class="form-control"  name="invoice_a"  required>
       </div>
     </div>
   </div>
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
+
+
+
       <div class="input-group margin">
                   <div class="input-group-btn">
                     <button type="button" class="btn btn-block btn-primary btn-flat size-125px">Client Person</button>
                   </div>
-              <select name="invoice_b"  class="form-control" required>
+              <select name="invoice_b"  class="form-control" onChange="getState(this.value)" required>
                  <option value=" " Selected> </option>
                  <?php 
 global $conn;
@@ -48,29 +51,34 @@ global $conn;
               
               </select>
       </div>
+
+
     </div>
-    <div class="col-md-6">
+    <div class="col-md-4">
       <div class="input-group margin">
                   <div class="input-group-btn">
                     <button type="button" class="btn btn-block btn-primary btn-flat size-125px">Business Type</button>
                   </div>
                 
-              <select name="invoice_c"  class="form-control" required>
-                 <option value=" " Selected> </option>
-                 <?php $xQx=getallSup_BusType();
-                 
-                      while($row=mysqli_fetch_array($xQx))
+<div class="form-control" id="item_client" >
 
-                      {
-                        echo "
-                        <option value='".$row[0]."' >".$row[1]."</option>
-                        ";
-                      }
-                 ?>
-              
-              </select>
+      </div>
+      </div>
+
+    </div>
+
+    <div class="col-md-4">
+      <div class="input-group margin">
+                  <div class="input-group-btn">
+                    <button type="button" class="btn btn-block btn-primary btn-flat size-125px">D.R.</button>
+                  </div>
+                
+                  <input type="number" class="form-control"  name="invoice_dr"  required>
       </div>
     </div>
+
+
+
   </div>
 
 
@@ -258,15 +266,31 @@ frm_add_invoice_item();
 <br>
 <br>
 
+<div class="box box-primary" style="padding: 20px;">
 <?php
 tbl_invoice();
 ?>
-
+</div>
 
 
 
 </div>
 
+<script>
+  
+
+function getState(val) {
+    $.ajax({
+    type: "POST",
+    url: "lv_getclient.php",
+    data:'positionname='+val,
+    success: function(data){
+        $("#item_client").html(data);
+    }
+    });
+}
+
+</script>
 
 
 

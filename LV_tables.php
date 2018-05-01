@@ -851,6 +851,7 @@ function exportbtn()
                   <th>Amount Paid</th>
                   <th>Handled By</th>
                   <th>Date Paid</th>
+                    <th>Tax</th>
                   <th>Actions</th>
 
               </tr>
@@ -863,19 +864,19 @@ global $conn;
 $total='';
 if((!empty($_POST['SDT'])) && (!empty($_POST['EDT'])) &&  (!empty($_POST['Client'])) )
 {
-  $_SESSION['exportsql']=$xQx_select = "SELECT  FROM  reportsclientorder WHERE date_paid between '".$_POST['SDT']."' AND '".$_POST['EDT']."'  AND isDeleted='0' AND clientName='".$_POST['Client']."' ";
+  $_SESSION['exportsql']=$xQx_select = "SELECT r.reportOrder_id,r.clientName,r.total_amount,r.amount_paid,r.handledBy,r.date_paid,i.isVatable,r.invoiceId FROM  reportsclientorder r INNER JOIN invoices i ON i.invoiceId = r.invoiceId WHERE r.date_paid between '".$_POST['SDT']."' AND '".$_POST['EDT']."'  AND r.isDeleted='0' AND r.clientName='".$_POST['Client']."' ";
 }
 elseif((empty($_POST['SDT'])) && (empty($_POST['EDT'])) &&  (!empty($_POST['Client'])))
 {
-    $_SESSION['exportsql']=$xQx_select = "SELECT * FROM  reportsclientorder WHERE   isDeleted='0' AND clientName='".$_POST['Client']."' ";
+    $_SESSION['exportsql']=$xQx_select = "SELECT r.reportOrder_id,r.clientName,r.total_amount,r.amount_paid,r.handledBy,r.date_paid,i.isVatable,r.invoiceId FROM  reportsclientorder r INNER JOIN invoices i ON i.invoiceId = r.invoiceId WHERE   r.isDeleted='0' AND r.clientName='".$_POST['Client']."' ";
 }
 elseif((!empty($_POST['SDT'])) && (!empty($_POST['EDT'])) &&  (empty($_POST['Client'])))
 {
-    $_SESSION['exportsql']=$xQx_select = "SELECT * FROM  reportsclientorder WHERE  date_paid between '".$_POST['SDT']."' AND '".$_POST['EDT']."'  AND isDeleted='0' ";
+    $_SESSION['exportsql']=$xQx_select = "SELECT r.reportOrder_id,r.clientName,r.total_amount,r.amount_paid,r.handledBy,r.date_paid,i.isVatable,r.invoiceId FROM  reportsclientorder r INNER JOIN invoices i ON i.invoiceId = r.invoiceId WHERE  r.date_paid between '".$_POST['SDT']."' AND '".$_POST['EDT']."'  AND r.isDeleted='0' ";
 }
 else
 {
-    $_SESSION['exportsql']=$xQx_select = "SELECT * FROM  reportsclientorder WHERE isDeleted='0'";
+    $_SESSION['exportsql']=$xQx_select = "SELECT r.reportOrder_id,r.clientName,r.total_amount,r.amount_paid,r.handledBy,r.date_paid,i.isVatable,r.invoiceId FROM  reportsclientorder r INNER JOIN invoices i ON i.invoiceId = r.invoiceId WHERE r.isDeleted='0'";
 }
  
 
@@ -898,14 +899,24 @@ if(mysqli_num_rows($query_select)>0)
               echo" 
               <tr>
               <td>$row[0]</td>
-              <td>$row[4]</td>
+              <td>$row[1]</td>
           
-              <td>$row[7]</td> 
+              <td>".number_format($row[2],2)."</td> 
 
 
-              <td>$row[8]</td>
-              <td>$row[9]</td>
-              <td>$row[10]</td>
+              <td>".number_format($row[3],2)."</td>
+              <td>$row[4]</td>
+              <td>$row[5]</td>
+                  ";
+              if ($row[6]=='1')
+              {
+                echo "<td>Vatable</td>";
+              }
+              else
+              {
+                echo "<td>Non Vatable</td>";
+              }
+              echo"
 <td>
                           
               <div class='row'>
@@ -1029,19 +1040,19 @@ if(mysqli_num_rows($query_select)>0)
         <div class='modal-body'>
           <form  role='form' action='print_report.php' method='post' id='partdelpost' enctype='multipart/form-data'>
           <div class='form-group'>
-            <input type='text' class='form-control' id='SupId' name='invoiceId'  style='opacity:0;' value='".$row[1]."'>
+            <input type='text' class='form-control' id='SupId' name='invoiceId'  style='opacity:0;' value='".$row[7]."'>
             <label ><center>Would you like to print Report # '".$row[0]."' ?</center></label>
           </div>
         </div>
         <div class='modal-footer'>
-                          <button type='submit' name='delSupplier'  class='btn btn-success'>Yes</button>
+                          <button type='submit'   class='btn btn-success'>Yes</button>
                           <button type='button' class='btn btn-danger' data-dismiss='modal'>No</button>
         </form>
         </div>
       </div>
     </div>
   </div>";  
-$total[].=$row[7];
+/*$total[].=$row[7];*/
 
             }
             ?>
@@ -1062,7 +1073,7 @@ $total[].=$row[7];
 $total[].=$row123[7];
 }
 
-   echo "<hr><div style='float:right;cursor:default;margin-right:30px;' class='btn btn-primary btn-flat' disabled> GRAND TOTAL ". array_sum($total)."</div><br><br><br><br><br>";
+/*   echo "<hr><div style='float:right;cursor:default;margin-right:30px;' class='btn btn-primary btn-flat' disabled> GRAND TOTAL ". array_sum($total)."</div><br><br><br><br><br>";*/
 
 }
 } 
@@ -1206,7 +1217,7 @@ function exportbtn()
                      <th>Due Date</th>
                           <th>Handled By</th>
                   <th>Sell Price</th>
-             
+                         <th>Tax</th>
              
 
 
@@ -1223,19 +1234,19 @@ $total='';
 
 if((!empty($_POST['SDT'])) && (!empty($_POST['EDT'])) &&  (!empty($_POST['Client'])) )
 {
-  $_SESSION['exportsql']=$xQx_select = "SELECT i.`invoiceId`,i.`clientName`,i.`date_created`,i.`due_date`,a.`handledBy`,SUM(a.`sellPrice`) FROM  invoices i INNER JOIN items_ordered a ON a.`invoiceId`=i.`invoiceId` WHERE   NOT i.`Status`='2' AND  i.`isDeleted`='0' AND a.`isDeleted`='0' AND i.`date_created` between '".$_POST['SDT']."' AND '".$_POST['EDT']."'  AND clientName='".$_POST['Client']."' GROUP BY i.`invoiceId` ";
+  $_SESSION['exportsql']=$xQx_select = "SELECT i.`invoiceId`,i.`clientName`,i.`date_created`,i.`due_date`,a.`handledBy`,SUM(a.`sellPrice`),i.`isVatable` FROM  invoices i INNER JOIN items_ordered a ON a.`invoiceId`=i.`invoiceId` WHERE   NOT i.`Status`='2' AND  i.`isDeleted`='0' AND a.`isDeleted`='0' AND i.`date_created` between '".$_POST['SDT']."' AND '".$_POST['EDT']."'  AND clientName='".$_POST['Client']."' GROUP BY i.`invoiceId` ";
 }
 elseif((empty($_POST['SDT'])) && (empty($_POST['EDT'])) &&  (!empty($_POST['Client'])))
 {
-    $_SESSION['exportsql']=$xQx_select = "SELECT i.`invoiceId`,i.`clientName`,i.`date_created`,i.`due_date`,a.`handledBy`,SUM(a.`sellPrice`) FROM  invoices i INNER JOIN items_ordered a ON a.`invoiceId`=i.`invoiceId` WHERE   NOT i.`Status`='2' AND  i.`isDeleted`='0' AND a.`isDeleted`='0'   AND clientName='".$_POST['Client']."' GROUP BY i.`invoiceId` ";
+    $_SESSION['exportsql']=$xQx_select = "SELECT i.`invoiceId`,i.`clientName`,i.`date_created`,i.`due_date`,a.`handledBy`,SUM(a.`sellPrice`),i.`isVatable` FROM  invoices i INNER JOIN items_ordered a ON a.`invoiceId`=i.`invoiceId` WHERE   NOT i.`Status`='2' AND  i.`isDeleted`='0' AND a.`isDeleted`='0'   AND clientName='".$_POST['Client']."' GROUP BY i.`invoiceId` ";
 }
 elseif((!empty($_POST['SDT'])) && (!empty($_POST['EDT'])) &&  (empty($_POST['Client'])))
 {
-    $_SESSION['exportsql']=$xQx_select = "SELECT i.`invoiceId`,i.`clientName`,i.`date_created`,i.`due_date`,a.`handledBy`,SUM(a.`sellPrice`) FROM  invoices i INNER JOIN items_ordered a ON a.`invoiceId`=i.`invoiceId` WHERE   NOT i.`Status`='2' AND  i.`isDeleted`='0' AND a.`isDeleted`='0'  AND i.`date_created`  between '".$_POST['SDT']."' AND '".$_POST['EDT']."'  GROUP BY i.`invoiceId`  ";
+    $_SESSION['exportsql']=$xQx_select = "SELECT i.`invoiceId`,i.`clientName`,i.`date_created`,i.`due_date`,a.`handledBy`,SUM(a.`sellPrice`),i.`isVatable` FROM  invoices i INNER JOIN items_ordered a ON a.`invoiceId`=i.`invoiceId` WHERE   NOT i.`Status`='2' AND  i.`isDeleted`='0' AND a.`isDeleted`='0'  AND i.`date_created`  between '".$_POST['SDT']."' AND '".$_POST['EDT']."'  GROUP BY i.`invoiceId`  ";
 }
 else
 {
-    $_SESSION['exportsql']= $xQx_select = "SELECT i.`invoiceId`,i.`clientName`,i.`date_created`,i.`due_date`,a.`handledBy`,SUM(a.`sellPrice`) FROM  invoices i INNER JOIN items_ordered a ON a.`invoiceId`=i.`invoiceId` WHERE   NOT i.`Status`='2' AND  i.`isDeleted`='0' AND a.`isDeleted`='0' GROUP BY i.`invoiceId`  " ;
+    $_SESSION['exportsql']= $xQx_select = "SELECT i.`invoiceId`,i.`clientName`,i.`date_created`,i.`due_date`,a.`handledBy`,SUM(a.`sellPrice`),i.`isVatable` FROM  invoices i INNER JOIN items_ordered a ON a.`invoiceId`=i.`invoiceId` WHERE   NOT i.`Status`='2' AND  i.`isDeleted`='0' AND a.`isDeleted`='0' GROUP BY i.`invoiceId`  " ;
 }
 
 
@@ -1263,8 +1274,21 @@ else
                     <td>$row[2]</td>              
                     <td>".$row[3]."</td>
                     <td>$row[4]</td>
-                     <td>".number_format($row[5])."</td>
+                     <td>".number_format($row[5],2)."</td>
+";
+  if ($row[6]=='1')
+              {
+                echo "<td>Vatable</td>";
+              }
+              else
+              {
+                echo "<td>Non Vatable</td>";
+              }
 
+
+
+
+echo "
                     </tr>";
 
                   $total[].=$row[5];
@@ -1303,14 +1327,15 @@ function tbl_invoice()
                   <th>Client</th>
                   <th>Date</th>
                   <th>Due Date</th>            
-                   <th>Actions </th>     
+                   <th>Tax</th>     
+                   <th>Actions</th>
               </tr>
           </thead>
           <tbody>
             <?php  
 
 global $conn;
-  $xQx = "SELECT invoiceId,clientName,date_created,due_date FROM invoices WHERE Status ='0'  AND isDeleted = '0' ";
+  $xQx = "SELECT invoiceId,clientName,date_created,due_date,isVatable FROM invoices WHERE Status ='0'  AND isDeleted = '0' ";
   $query_invoice=mysqli_query($conn,$xQx);
 
           while($row=mysqli_fetch_array($query_invoice))
@@ -1331,7 +1356,17 @@ global $conn;
               <td>$row[1]</td>
        
               <td>$row[2]</td>
-              <td>$row[3]</td>
+              <td>$row[3]</td>";
+              if ($row[4]=='1')
+              {
+                echo "<td>Vatable</td>";
+              }
+              else
+              {
+                echo "<td>Non Vatable</td>";
+              }
+
+              echo "
 
               <td>
            
@@ -1727,7 +1762,8 @@ function tbl_invoice_generated()
             
                   <th>Date</th>
                   <th>Due Date</th>    
-                  <th>D.R.</th>                          
+                  <th>D.R.</th>     
+                        <th>Tax</th>                        
                    <th>Actions </th>     
               </tr>
           </thead>
@@ -1760,6 +1796,17 @@ function tbl_invoice_generated()
               <td>$row[11]</td>
               <td>$row[12]</td>
               <td>$row[27]</td>
+              ";
+              if ($row[28]=='1')
+              {
+                echo "<td>Vatable</td>";
+              }
+              else
+              {
+                echo "<td>Non Vatable</td>";
+              }
+
+              echo "
               <td>
               <div class='row'>
 
@@ -2123,6 +2170,7 @@ function tbl_invoice_paid()
                   <th>Business Type</th>
                   <th>Date</th>
                   <th>Due Date</th>            
+                              <th>Tax</th>   
                    <th>Actions </th>     
               </tr>
           </thead>
@@ -2151,7 +2199,17 @@ function tbl_invoice_paid()
               <td>$row[6]</td>
               <td>$row[11]</td>
               <td>$row[12]</td>
+";
+              if ($row[28]=='1')
+              {
+                echo "<td>Vatable</td>";
+              }
+              else
+              {
+                echo "<td>Non Vatable</td>";
+              }
 
+              echo "
               <td>
               <div class='row'>
 

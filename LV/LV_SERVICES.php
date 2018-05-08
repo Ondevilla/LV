@@ -1,23 +1,9 @@
 <div class="wrapper" style="background-color:transparent;">
 
-
-
-<div><p>PAID INVOICES</p></div>
-
-
+<div><p>MANAGE SERVICES</p></div>
 
 <style>
-  .switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-  background-color:#3c8dbc;
-  border-color:#367fa9;
-  
-}
 
-/* Hide default HTML checkbox */
 .switch input {display:none;}
 
 /* The slider */
@@ -47,6 +33,7 @@
 
 input:checked + .slider {
   background-color: #2196F3;
+
 }
 
 input:focus + .slider {
@@ -58,7 +45,6 @@ input:checked + .slider:before {
   -ms-transform: translateX(26px);
   transform: translateX(26px);
 }
-
 /* Rounded sliders */
 
 #panel {
@@ -82,14 +68,14 @@ input::-webkit-inner-spin-button {
 }
 
 </style>
-     
+  
+ <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script> 
 <script>
 $(document).ready(function(){
     $('#ManageClients').DataTable({
       "aoColumns": [
           null,
-          null, 
-          null, 
           null,
           null, 
           { "orderSequence": [ "" ] }
@@ -105,39 +91,34 @@ $(document).ready(function(){
 
 });
 
-
-
-
-
-
-
-
-
-
 </script>
 
 
 
     
 
-<!--     <div class="rows">
+    <div class="rows">
             <div class="col-md-12" id="addbtn">
                 <button type="button"  class="btn btn-block btn-success btn-flat">ADD</button>
             </div>
-    </div> -->
+    </div>
 
 <div id="panel">
+<?php
 
+frm_add_services();
+
+?>
 </div>
 
 
 <br>
 <br>
-
 <div class="box box-primary" style="padding: 20px;">
 <?php
-tbl_invoice_paid();
+tbl_services()
 ?>
+
 </div>
 
 

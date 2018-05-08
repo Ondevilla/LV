@@ -8,16 +8,73 @@ session_start();
      
 $catch_invoiceId =  $_SESSION["get_invoiceId"];
 
-$paid_amount = $_POST["paid_amount"];
-$total_amount = $_POST["total_amount"];
+(int)$paid_amount = $_POST["paid_amount"];
+(int)$total_amount = $_POST["total_amount"];
 
 $get_user = $_SESSION["u_id"];
+
+
+
+
+if($paid_amount < $total_amount)
+{
+
+ 
+             
+        $xQx_select_balance = "SELECT * FROM invoices WHERE invoiceId = '$catch_invoiceId' AND isDeleted = '0'";
+        $query_select_balance=mysqli_query($conn,$xQx_select_balance);
+                
+
+                      while($row=mysqli_fetch_aSSOC($query_select_balance))
+
+                      {  
+
+
+
+/*$sp[].=$row["sellPrice"];*/
+
+(int)$catch_balance = $row["balance"];
+
+
+}
+
+
+
+$balance = $total_amount - $paid_amount;
+echo $balance;
+        $xQx_update_new = "UPDATE invoices SET balance = '$balance' WHERE invoiceId = '$catch_invoiceId'";
+        $query_update_new=mysqli_query($conn,$xQx_update_new);
+
+        date_default_timezone_set('Asia/manila');
+        $D=date("Y-m-d");
+        $xQx_insert_new = "INSERT INTO payment_terms (invoice_id,date_paid,amount_paid,handledBy,isDeleted) VALUES ('$catch_invoiceId','$D','$paid_amount','$get_user','0')";
+        $query_insert_new=mysqli_query($conn,$xQx_insert_new);
+
+
+
+
+
+}
+
+else
+
+{
+
+        $xQx_balance = "UPDATE invoices SET balance = '0' WHERE invoiceId = '$catch_invoiceId'";
+        $query_balance=mysqli_query($conn,$xQx_balance);
+
+        date_default_timezone_set('Asia/manila');
+        $D=date("Y-m-d");
+        $xQx_insert_new = "INSERT INTO payment_terms (invoice_id,date_paid,amount_paid,handledBy,isDeleted) VALUES ('$catch_invoiceId','$D','$paid_amount','$get_user','0')";
+        $query_insert_new=mysqli_query($conn,$xQx_insert_new);
+
+
 
 
  $xQx_update = "UPDATE invoices SET Status = '2' WHERE invoiceId = '$catch_invoiceId'";
   $query_update=mysqli_query($conn,$xQx_update);
 
-  $xQx_insert = "SELECT * FROM 	useraccount WHERE user_Id = '$get_user'";
+  $xQx_insert = "SELECT * FROM  useraccount WHERE user_Id = '$get_user'";
   $query_insert=mysqli_query($conn,$xQx_insert);         
 
 
@@ -25,11 +82,11 @@ $get_user = $_SESSION["u_id"];
 
 {
 
-			$user_name = $row["user_name"];
+      $user_name = $row["user_name"];
 }
 
 
-  $xQx_insert = "SELECT * FROM 	invoices WHERE invoiceId = '$catch_invoiceId'";
+  $xQx_insert = "SELECT * FROM  invoices WHERE invoiceId = '$catch_invoiceId'";
   $query_insert=mysqli_query($conn,$xQx_insert);         
 
 
@@ -37,17 +94,17 @@ $get_user = $_SESSION["u_id"];
 
 {
 
-					$invoiceId = $row["invoiceId"];
-					$invoiceStatId = $row["invoiceStatId"];
-					$clientId = $row["clientId"];
-					$clientName = $row["clientName"];
-					$bustypeId = $row["bustypeId"];
-					$bustypeName = $row["bustypeName"];
+          $invoiceId = $row["invoiceId"];
+          $invoiceStatId = $row["invoiceStatId"];
+          $clientId = $row["clientId"];
+          $clientName = $row["clientName"];
+          $bustypeId = $row["bustypeId"];
+          $bustypeName = $row["bustypeName"];
 
 
 }
 
-	/*		$invoiceId = $invoiceId_catch;
+  /*    $invoiceId = $invoiceId_catch;
 */
 
   $date = date('Y-m-d');
@@ -71,6 +128,26 @@ $get_user = $_SESSION["u_id"];
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ?> 
 
 
@@ -85,22 +162,30 @@ $get_user = $_SESSION["u_id"];
 
 
 
-    <script>   
-    window.location.href="admin.php?x=PAID%20INVOICE";
-    </script> 
+     <script>   
+
+
+       swal({
+                  title: "Success !",
+                  text: "Invoice has been fully paid !",
+                  type: "success",
+                  closeOnConfirm: false,
+                  showLoaderOnConfirm: true
+                },
+
+
+                function(){
+                  setTimeout(function(){
+                      window.location.href='admin.php?x=PAID%20INVOICE';
+                    }, 1000);
+                });
+</script>
 
 
     <?php
 
 
 
-
-
-
-
-
-
-
-
+}
 
 ?>

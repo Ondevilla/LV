@@ -707,6 +707,243 @@ function tbl_groups()
 
 
 
+
+<?php
+function tbl_services()
+{
+  ?>
+<!--   <table id="ManageSupplier" class="display" cellspacing="0" width="100%"> -->
+  <table id="manageservice" class="ui celled table" cellspacing="0" width="100%">
+          <thead>
+              <tr>
+                  <th>Service</th>
+                  <th>Sell Price</th>
+                  <th>Actions</th>
+
+              </tr>
+          </thead>
+          <tbody>
+            <?php  
+
+
+        $xQx=getServices();
+
+          while($row=mysqli_fetch_array($xQx))
+            {
+              $SeeModal="SeeModal".$row[0];
+              $EditModal="EditModal".$row[0];
+              $DeleteModal="DeleteModal".$row[0];
+              echo" 
+              <tr>
+              <td>$row[1]</td>
+          
+             
+  
+                           <td>$row[2]</td>
+<td>
+                          
+              <div class='row'>
+   
+              ";
+              ?>
+            <?php
+/*            echo '
+            <button type="button" class="btn btn-block btn-info btn-flat" data-toggle="modal" data-target="#'.$SeeModal.'"><i class="fa fa-eye"></i></button></center></div>
+            ';*/
+            ?>
+            <?php
+              echo "
+        
+              <div class='col-md-6'>
+              ";
+              ?>
+            <?php
+            echo '
+            <button type="button" class="btn btn-block btn-warning btn-flat" data-toggle="modal" data-target="#'.$EditModal.'"><i class="fa fa-edit"></i></button></center>
+            ';
+            ?>
+            <?php
+              echo "
+              </div>
+              <div class='col-md-6'>";
+              ?>
+            <?php
+            echo '
+            <button type="button" class="btn btn-block btn-danger btn-flat" data-toggle="modal" data-target="#'.$DeleteModal.'"><i class="fa fa-remove"></i></button></center>
+            ';
+            ?>
+            <?php
+              echo "
+              </div>
+              </div>
+              </td>
+              </tr>";
+/*  echo "   
+  <div id='".$SeeModal."' class='modal fade'>
+    <div class='modal-dialog'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+          <button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>
+          <h4 class='modal-title'>INFORMATION </h4>
+        </div>
+        <div class='modal-body'>
+              <div class='row'>
+              ";
+              $tag=array('','Group Name','Model Name',' Brand Name','Specification','Selling Price','Critical Stock');
+
+              for ($i=1; $i <=6 ; $i++) { 
+
+
+                if ($i==4)
+                {
+                    
+
+
+                    echo "
+                     <div class='row'>
+                      <div class='col-md-12'>
+                      <center>
+                                <button type='button' class='btn btn-block btn-primary btn-flat' style='width:98%; '>".$tag[$i]."</button>
+                                <textarea  style='width:98%; resize: none;' rows='5' class='form-control' disabled >".$row[$i]."</textarea>
+                      </center>
+                      </div>
+                    </div>
+
+                    ";
+                }
+                else
+                {
+
+                  echo "
+                  <div class='input-group margin'>
+                  <div class='input-group-btn'>
+                  <button type='button' class='btn btn-block btn-primary btn-flat size-125px'>".$tag[$i]."</button>
+                  </div>
+                  <input type='text' class='form-control'   disabled style='' value='".$row[$i]."'>
+                  </div>
+                  ";
+                }
+              }
+            
+
+              echo "      
+              
+              </div>
+        </div>
+        <div class='modal-footer'>
+        <button type='button' class='btn btn-primary' data-dismiss='modal'>OK</button>
+                        
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>";*/
+
+  echo "   
+  <div id='".$EditModal."' class='modal fade'>
+    <div class='modal-dialog'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+          <button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>
+          <h4 class='modal-title'>INFORMATION </h4>
+        </div>
+        <div class='modal-body'>
+
+        <form action='throw.php' method='POST'>
+  ";
+
+
+echo "                  <div class='input-group margin'>
+                  <div class='input-group-btn'>
+                  <button type='button' class='btn btn-block btn-primary btn-flat size-125px' value='".$row[0]."'>Service Name</button>
+                  <input type='hidden' name='getService_id' value='".$row[0]."'>
+                  </div>
+                  <input type='text' class='form-control'  name='editServices_name'  style='' placeholder='".$row[1]."'>
+                  </div>
+
+     <div class='input-group margin'>
+                  <div class='input-group-btn'>
+                  <button type='button' class='btn btn-block btn-primary btn-flat size-125px' name='getService_quantity' value='".$row[0]."'>Unit Price</button>
+                  </div>
+                  <input type='text' class='form-control'  name='editServices_quantity'  style='' placeholder='".$row[2]."'>
+                  </div>
+
+
+";
+
+
+?>
+
+
+  <div class="row">
+        <div class="col-md-12">
+        <center>
+                <button type="button" class="btn btn-block btn-primary btn-flat" style="width:98%; ">Remarks</button>        
+                <?php echo" <textarea  style='width:98%; resize: none;' rows='5' class='form-control'  name='editServices_remarks'  >".$row[4]." </textarea>"; ?>
+        </center>
+        </div>
+    </div>
+
+<?php
+
+
+echo "
+
+
+
+
+        <br>
+
+         <button type='submit' class='btn  btn-success btn-flat'  style='float:right;' name='editService'>Save</button>
+            <br>
+               <br>
+  </form>
+        </div>
+      </div>
+    </div>
+  </div>";
+
+
+
+  echo "   
+  <div id='".$DeleteModal."' class='modal fade'>
+    <div class='modal-dialog'>
+      <div class='modal-content'>
+        <div class='modal-header'>
+          <button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>
+          <h4 class='modal-title'>INFORMATION </h4>
+        </div>
+        <div class='modal-body'>
+          <form  role='form' action='throw.php' method='post' id='partdelpost' enctype='multipart/form-data'>
+          <div class='form-group'>
+            <input type='text' class='form-control' id='SupId' name='supId'  style='opacity:0;' value='".$row[0]."'>
+            <label ><center>Are you sure you want to delete '".$row[1]."' ?</center></label>
+          </div>
+        </div>
+        <div class='modal-footer'>
+                          <button type='submit' name='delServices'  class='btn btn-success'>Yes</button>
+                          <button type='button' class='btn btn-danger' data-dismiss='modal'>No</button>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>";      
+            }
+            ?>
+            
+          
+            </tbody>
+          </table>
+  <?php 
+} 
+
+
+
+
+
+?>
+
+
 <?php
 function tbl_reports()
 {
@@ -1383,13 +1620,18 @@ global $conn;
 
 
 <div class="col-md-4">
-            <button type="button" class="btn btn-block btn-warning btn-flat" data-toggle="modal" data-target="#'.$EditModal.'"><i class="fa fa-edit"></i></button>
-             </div>
+          <form action="admin.php?x=SAMPLE" method="post">
+            <button type="submit" class="btn btn-block btn-success btn-flat"><i class="fa fa-gear"></i></button></center> 
+            <input type="hidden" name="id"  value="'.$get_assets.'" >
+                       <input type="hidden" name="typesu"  value="Service" >
+            </form>
+                </div>
 
 <div class="col-md-4">
           <form action="admin.php?x=SAMPLE" method="post">
-            <button type="submit" class="btn btn-block btn-success btn-flat"><i class="fa fa-plus"></i></button></center> </div>
+            <button type="submit" class="btn btn-block btn-success btn-flat"><i class="fa fa-tags"></i></button></center> 
             <input type="hidden" name="id"  value="'.$get_assets.'" >
+                      <input type="hidden" name="typesu"  value="Item" >
             </form>
                 </div>
                       </div>
@@ -1408,15 +1650,16 @@ global $conn;
 
 
               <div class="row">
-          <div class="col-md-6">
+
+<div class="col-md-4">
+            <button type="button" class="btn btn-block btn-warning btn-flat" data-toggle="modal" data-target="#'.$EditModal.'"><i class="fa fa-edit"></i></button>
+</div>
+
+      <div class="col-md-4">
           <form action="throw.php" method="post">
 
                     <input type="hidden" name="generate_invoice"  value="'.$PayoutModal.'" >
             <button type="submit" class="btn btn-block btn-yellow btn-flat"><i class="fa fa-print"></i></button>
-
-
-
-
 
 
             </form>
@@ -1424,9 +1667,8 @@ global $conn;
 </div>
 
 
-<div class="col-md-6">
+<div class="col-md-4">
     <button type="button" class="btn btn-block btn-danger btn-flat" data-toggle="modal" data-target="#'.$DeleteModal.'"><i class="fa fa-remove"></i></button>
-
 </div>  
               </div>
 
@@ -1483,7 +1725,7 @@ Action
 
 <?php 
 
-  $xQx2 = "SELECT * FROM items_ordered WHERE isDeleted = '0' AND invoiceId = $invoice_id";
+  $xQx2 = "SELECT assetName,unitPrice,sellPrice,dateadded FROM items_ordered WHERE isDeleted = '0' AND invoiceId = $invoice_id";
   $query2=mysqli_query($conn,$xQx2);
 
 
@@ -1499,7 +1741,7 @@ Action
 <div class='col-md-4'>
 <br>
 <?php 
-echo $row2[2];
+echo $row2[0];
 
 ?>
 
@@ -1511,7 +1753,7 @@ echo $row2[2];
 <br>
 <?php 
 
-echo $row2[4];
+echo $row2[1];
 
 ?>
 
@@ -1523,7 +1765,7 @@ echo $row2[4];
 <div class='col-md-2'>
   <br>
 <?php 
-echo $row2[5];
+echo $row2[2];
 
 ?>
 
@@ -1539,7 +1781,7 @@ echo $row2[5];
   <br>
 <?php 
 
-echo $row2[8];
+echo $row2[3];
 
 ?>
 
@@ -1611,7 +1853,13 @@ echo "<form  role='form' action='LV_submit.php' method='post' enctype='multipart
           <h4 class='modal-title'>INFORMATION </h4>
         </div>
         <div class='modal-body'>
+        <div class='col-md-12 btn-primary' disabled>
+<h6>ITEM/s</h6>
+</div>
+
+           
               <div class='row'>
+
 <div class='col-md-6'>
 Item Name
 </div>         
@@ -1638,14 +1886,118 @@ Date
 
 
 
-
 ";
+
+  $xQx = "SELECT assetName,unitPrice,sellPrice,dateadded FROM `items_ordered` WHERE `isDeleted` = '0'  and `invoiceId` = '$invoice_id'";
+  $query=mysqli_query($conn,$xQx);
+
+
+            while($rowc1 = mysqli_fetch_array($query))
+
+                { 
+
+
+
+
+?>
+                <div class='row'>
+<div class='col-md-6'>
+
+<?php 
+echo $rowc1[0];
 
 ?>
 
-<?php 
+</div>         
 
-  $xQx = "SELECT * FROM items_ordered WHERE isDeleted = '0' AND invoiceId = '$invoice_id'";
+
+<div class='col-md-2'>
+
+
+<?php 
+echo $rowc1[1];
+
+?>
+
+
+
+</div>  
+
+
+<div class='col-md-2'>
+<?php 
+echo $rowc1[2];
+
+?>
+
+
+
+</div>  
+
+
+
+ 
+
+<div class='col-md-2'>
+<?php 
+echo $rowc1[3];
+
+?>
+
+</div>  
+
+  </div>
+
+
+
+
+
+       <?php 
+   
+
+}
+echo "
+
+
+
+
+<div class='col-md-12 btn-primary' disabled>
+<h6>SERVICE/s</h6>
+</div>
+
+              <div class='row'>
+
+<div class='col-md-6'>
+Item Name
+</div>         
+
+
+<div class='col-md-2'>
+Quantity
+</div>  
+
+
+<div class='col-md-2'>
+Sell Price
+</div>  
+
+
+
+
+<div class='col-md-2'>
+Date
+</div>  
+
+  </div>
+
+
+";
+
+
+
+
+
+  $xQx = "SELECT b.`services_name`,a.`quantity`,a.`sellprice`,a.`dateadded` FROM `invoice_services` a INNER JOIN `services` b ON a.`services_id`=b.`services_id`  WHERE a.`isDeleted` = '0'  AND a.`invoiceId` = '$invoice_id'";
   $query=mysqli_query($conn,$xQx);
 
 
@@ -1661,7 +2013,7 @@ Date
 <div class='col-md-6'>
 
 <?php 
-echo $row[2];
+echo $row[0];
 
 ?>
 
@@ -1672,7 +2024,7 @@ echo $row[2];
 
 
 <?php 
-echo $row[4];
+echo $row[1];
 
 ?>
 
@@ -1683,7 +2035,7 @@ echo $row[4];
 
 <div class='col-md-2'>
 <?php 
-echo $row[5];
+echo $row[2];
 
 ?>
 
@@ -1697,19 +2049,28 @@ echo $row[5];
 
 <div class='col-md-2'>
 <?php 
-echo $row[8];
+echo $row[3];
 
 ?>
 
 </div>  
 
   </div>
+
+
+
+
+
        <?php 
    
 
 }
+        
+
              echo "      
           
+
+<br>
 
 
 

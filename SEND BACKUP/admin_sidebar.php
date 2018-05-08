@@ -196,7 +196,7 @@ function punolistnav($a,$b,$c,$d,$e,$f)
                       $f="fa fa-circle-o";     
                       punolistnav($a,$b,$c,$d,$e,$f);          
         }
-        elseif($i!=7 && $i!=8 &&  $_SESSION["access"]==2)
+        elseif($i!=8 && $i!=9 &&  $_SESSION["access"]==2)
         {     
               $a=$_GET['x'];
               $b=$sidebar_label[$i];
@@ -204,7 +204,7 @@ function punolistnav($a,$b,$c,$d,$e,$f)
               listnav($a,$b,$c);
         }
 
-        elseif($i!=8 && $i!=9 &&  $_SESSION["access"]==1)
+        elseif($i!=10 && $i!=11 &&  $_SESSION["access"]==1)
         { 
               $a=$_GET['x'];
               $b=$sidebar_label[$i];

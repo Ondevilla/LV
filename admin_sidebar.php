@@ -151,7 +151,7 @@ function punolistnav($a,$b,$c,$d,$e,$f)
    for ($i=0; $i < $x ; $i++ ) 
    { 
         
-         if($i==2 &&  $_SESSION["access"]==1    )
+         if($i==4 &&  $_SESSION["access"]==1    )
         { 
 
                       $a=$_GET['x'];
@@ -174,7 +174,7 @@ function punolistnav($a,$b,$c,$d,$e,$f)
                       treelistnav($a,$b,$c,$d,$e,$f);          
         }
 
-       elseif($i==4 &&  $_SESSION["access"]==1    )
+       elseif($i==6 &&  $_SESSION["access"]==1    )
         { 
 
                       $a=$_GET['x'];
@@ -185,7 +185,7 @@ function punolistnav($a,$b,$c,$d,$e,$f)
                       $f="fa fa-circle-o";     
                       punolistnav($a,$b,$c,$d,$e,$f);          
         }
-         elseif($i==3 &&  $_SESSION["access"]==2    )
+         elseif($i==4 &&  $_SESSION["access"]==2    )
         { 
 
                       $a=$_GET['x'];

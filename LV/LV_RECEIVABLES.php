@@ -1,6 +1,6 @@
 <div class="wrapper" style="background-color:transparent;">
 
-<div><p>MANAGE REPORTS</p></div>
+<div><p>MANAGE RECEIVABLES</p></div>
 
 <style>
   .switch {
@@ -82,17 +82,16 @@ input::-webkit-inner-spin-button {
 
 <script>
 $(document).ready(function(){
-    $('#ManageReport').DataTable({
-      "searching":false,
-      "lengthChange": false,
+    $('#RECEIVABLES').DataTable({
       "aoColumns": [
           null,
           null,
           null, 
           null,
-          null,
-          null,
-          { "orderSequence": [ "" ] }
+           null,
+           null,
+          null
+      
         
       ]
   } );
@@ -125,8 +124,9 @@ $(document).ready(function(){
 
 
 <?php
-tbl_reports();
+tbl_receivables();
 ?>
+
 
 
 

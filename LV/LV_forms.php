@@ -60,7 +60,53 @@ function frm_add_account()
 }
 
 ?>
+<?php
 
+
+
+function frm_add_services()
+{
+?>
+<div class="divider"></div>
+
+  <form  role="form" action="throw.php" method="post"   enctype="multipart/form-data" >
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="input-group margin">
+                  <div class="input-group-btn">
+                    <button type="button" class="btn btn-block btn-primary btn-flat size-125px" >Service Name</button>
+                  </div>
+                  <input type="text" class="form-control"  name="service_name"  required>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="input-group margin">
+                  <div class="input-group-btn">
+                    <button type="button" class="btn btn-block btn-primary btn-flat size-125px" >Sell Price</button>
+                  </div>
+                  <input type="text" class="form-control"  name="service_price"  required>
+      </div>
+    </div>
+
+
+  </div>
+ 
+
+
+
+  <button type="submit" class="btn  btn-success btn-flat"  style="float:right;" name="addService">Submit</button>
+  </form>  
+
+  <br>
+  <br>
+  <div class="divider"></div>
+
+<?php 
+}
+
+?>
 <!-- ------------------------------------------------------------------------------------------------------------------------ -->
 <!-- ------------------------------------------------------------------------------------------------------------------------ -->
 <!-- ------------------------------------------------------------------------------------------------------------------------ -->

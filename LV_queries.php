@@ -90,6 +90,15 @@ function getGroup()
   return  $query;
 }   
 
+function getServices()
+{
+  global $conn;
+  $xQx = "SELECT * ";
+  $xQx .= "FROM services ";
+  $xQx .= "WHERE isDeleted = 0";
+  $query=mysqli_query($conn,$xQx);
+  return  $query;
+}   
 
 function addSupplier($a,$b,$c,$d,$e,$f,$g,$h,$i,$j)
 {
@@ -710,6 +719,10 @@ function getEdit_Clients($a)
   return  $query;
 
 }
+
+
+
+
 
 function getItems()
 {

@@ -794,6 +794,12 @@ $SerN[]="";
 
 
 
+
+
+
+
+
+
 if (isset($_POST['addItems_services']))
 {
 
@@ -875,6 +881,48 @@ if (isset($_POST['addItems_services']))
 
 $_SESSION['SN_services']='0';
 $SerN_services[]="";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

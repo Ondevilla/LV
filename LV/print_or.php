@@ -2,12 +2,14 @@
  ob_start();
 include("connect.config.php");
 require('fpdf17/fpdf.php');
+
+
 session_start();
 
 
 
 
-$invoiceId = $_POST["invoiceId"];
+$invoiceId = $_POST["print_or"];
 
   $xQx_clientId_id = "SELECT * FROM invoices WHERE invoiceId = '$invoiceId'";
   $query_clientId_id=mysqli_query($conn,$xQx_clientId_id);         
@@ -58,14 +60,13 @@ $pdf->SetFont('Arial','',8);
 
 //Cell(width , height , text , border , end line , [align] )
 // Insert a logo in the top-left corner at 300 dpi
-$pdf->Image('fpdf17/cavitech.png',50,3,-200);
+$pdf->Image('fpdf17/cavitech.png',70,3,-400);
 $pdf->Cell(59 ,5,'',0,1);//end of line
 $pdf->Cell(59 ,5,'',0,1);//end of line
 $pdf->Cell(59 ,5,'',0,1);//end of line
 $pdf->Cell(59 ,5,'',0,1);//end of line
-$pdf->Cell(59 ,5,'',0,1);//end of line
-$pdf->Cell(59 ,5,'',0,1);//end of line
-$pdf->Cell(59 ,5,'',0,1);//end of line
+
+
 
 $pdf->Cell(0 ,3,'Block 3A LOT 4 DIAMOND ST., WESTRIDGE RESIDENCES, BRGY. SALAWAG, DASMARINAS CITY, CAVITE 4114',0,1,'C');
 
@@ -75,8 +76,8 @@ $pdf->Cell(0 ,3,'VAT REG. TIN:008-934-715-000/www.cavitech.ph',0,1,'C');
 $pdf->Cell(59 ,5,'',0,1);//end of line
 //set font to arial, bold, 14pt
 $pdf->SetFont('Arial','B',14);
-$pdf->Cell(130 ,5,'CHARGE INVOICE',0,0);
-$pdf->Cell(12 ,5,'NO',0,0);//end of line
+$pdf->Cell(125 ,5,'CHARGE INVOICE',0,0);
+$pdf->Cell(20 ,5,'NO',0,0);//end of line
 $pdf->Cell(25 ,5,$invoiceId,0,1);//end of line
 
 
@@ -85,17 +86,31 @@ $pdf->SetFont('Arial','',10);
 $pdf->Cell(50 ,5,'',0,1);
 $pdf->Cell(25 ,5,'SOLD TO    ',0,0);
 $pdf->Cell(100 ,5,$get_clientname,0,0);
-$pdf->Cell(15 ,5,'DATE ',0,0);
+$pdf->Cell(20 ,5,'DATE ',0,0);
 $pdf->Cell(54 ,5,$date,0,1);//end of line
+
+$countca=strlen($client_address);
+$first=substr($client_address, 0,99);
+$last=substr($client_address, 99);
+
 $pdf->Cell(25 ,5,'ADDRESS  ',0,0);
-$pdf->Cell(100 ,5,$client_address,0,1);
-$pdf->Cell(25 ,5,'TERMS     ',0,0);
-$pdf->Cell(100 ,5,'__ CASH __ CHECK',0,0);//end of line
-$pdf->Cell(25 ,5,'P.O. NO',0,0);
+$pdf->Cell(100 ,5,$first,0,0);
+
+
+$pdf->Cell(22 ,5,'TERMS',0,0);
+$pdf->Cell(5 ,4,' ',1,0);//end of line
+$pdf->Cell(12 ,5,'CASH ',0,0);//end of line
+$pdf->Cell(5 ,4,' ',1,0);//end of line
+$pdf->Cell(12 ,5,' CHECK ',0,1);//end of line
+
+$pdf->Cell(25 ,5,' ',0,0);
+$pdf->Cell(100 ,5,$last,0,0);
+
+$pdf->Cell(20 ,5,'P.O. NO',0,0);
 $pdf->Cell(34 ,5,'1000',0,1);//end of line
 $pdf->Cell(50 ,5,'BUSINESS NAME STYLE  ',0,0);
 $pdf->Cell(75 ,5,$bustype_name,0,0);
-$pdf->Cell(25 ,5,'TIN ',0,0);
+$pdf->Cell(20 ,5,'TIN ',0,0);
 $pdf->Cell(54 ,5,$get_tin,0,1);//end of line
 $pdf->Cell(50 ,5,'OSCA/PWD ID NO  ',0,0);
 $pdf->Cell(25 ,5,$get_pwd,0,0);
@@ -129,7 +144,17 @@ $pdf->Cell(54 ,5,'________________________________',0,1);//end of line
             $contactPerson = $row["contactPerson"];
             $address = $row["address"];
             $email = $row["email"]; 
-            $tax = $row["tax_status"]; 
+  
+
+}
+
+
+
+  $xQx_clientInfo1 = "SELECT * FROM invoices WHERE invoiceId = '$invoiceId' and clientId = '$clientId'";
+  $query_clientInfo1=mysqli_query($conn,$xQx_clientInfo1); 
+
+ $row1=mysqli_fetch_array($query_clientInfo1);
+   $tax = $row1["isVatable"]; 
 
         
 
@@ -137,7 +162,7 @@ $pdf->Cell(54 ,5,'________________________________',0,1);//end of line
 
 
 
-          if($tax=="Vatable")
+          if($tax==1)
 
           {
 
@@ -155,48 +180,17 @@ $pdf->Cell(54 ,5,'________________________________',0,1);//end of line
           }
 
 
-}
 
 
+$pdf->Cell(189 ,5,'',0,1);//end of line
 
-
-
-/*$pdf->Cell(130 ,5,'Phone [+12345678]',0,0);
-$pdf->Cell(25 ,5,'Invoice #',0,0);
-$pdf->Cell(34 ,5,$invoiceId,0,1);//end of line
-
-$pdf->Cell(130 ,5,'Fax [+12345678]',0,0);
-$pdf->Cell(25 ,5,'Customer ID',0,0);
-$pdf->Cell(34 ,5,$clientId,0,1);//end of line*/
-
-//make a dummy empty cell as a vertical spacer
-$pdf->Cell(189 ,10,'',0,1);//end of line
-
-//billing address
-/*$pdf->Cell(100 ,5,'Bill to',0,1);//end of line
-
-//add dummy cell at beginning of each line for indentation
-$pdf->Cell(10 ,5,'',0,0);
-$pdf->Cell(90 ,5,$clientName,0,1);
-
-$pdf->Cell(10 ,5,'',0,0);
-$pdf->Cell(90 ,5,$contactPerson,0,1);
-
-$pdf->Cell(10 ,5,'',0,0);
-$pdf->Cell(90 ,5,$address,0,1);
-
-$pdf->Cell(10 ,5,'',0,0);
-$pdf->Cell(90 ,5,$email,0,1);
-
-//make a dummy empty cell as a vertical spacer
-$pdf->Cell(189 ,10,'',0,1);//end of line*/
 
 //invoice contents
 $pdf->SetFont('Arial','B',12);
 
-$pdf->Cell(30 ,5,'QTY',1,0,'C');
+$pdf->Cell(20 ,5,'QTY',1,0,'C');
 
-$pdf->Cell(85 ,5,'DESCRIPTION',1,0,'C');
+$pdf->Cell(95 ,5,'DESCRIPTION',1,0,'C');
 
 $pdf->Cell(40 ,5,'UNIT PRICE',1,0,'C');//end of line
 
@@ -210,8 +204,8 @@ $pdf->SetFont('Arial','',12);
 //Numbers are right-aligned so we give 'R' after new line parameter
 
 $sp="";
-/*  $xQx_items = "SELECT g.`groupName`,a2.`serialName`,g.`sellPrice` FROM assetstwo a2 INNER JOIN groups g ON g.`groupid`=a2.`itmTypeId` INNER JOIN items_ordered id ON id.`assetName`=a2.`serialName` INNER JOIN invoices i ON i.`invoiceId` = id.`invoiceId` WHERE i.`invoiceId`='".$invoiceId."'    AND id.`isDeleted`='0' GROUP BY a2.`serialName` ";*/
-  $xQx_items = "SELECT * FROM items_ordered WHERE invoiceId = '$invoiceId'";
+  $xQx_items = "SELECT g.`groupName`,a2.`serialName`,id.`sellPrice`,id.`unitPrice` FROM assetstwo a2 INNER JOIN groups g ON g.`groupid`=a2.`itmTypeId` INNER JOIN items_ordered id ON id.`assetName`=a2.`serialName` INNER JOIN invoices i ON i.`invoiceId` = id.`invoiceId` WHERE i.`invoiceId`='".$invoiceId."'    AND id.`isDeleted`='0' GROUP BY a2.`serialName` ";
+  // $xQx_items = "SELECT * FROM items_ordered WHERE invoiceId = '$invoiceId' ";
 
   $query_items=mysqli_query($conn,$xQx_items);         
 
@@ -221,14 +215,37 @@ $sp="";
 {
 
   
-/*$sp[].=$row["sellPrice"];*/
-$pdf->Cell(30 ,5,$row["quantity"],1,0,'C');
-$pdf->Cell(85 ,5,$row["assetName"],1,0,'C');
-$pdf->Cell(40 ,5,number_format($row["unitPrice"]),1,0,'R');
+$sp[].=$row["sellPrice"];
+$pdf->Cell(20 ,5,'1',1,0,'C');
+$pdf->Cell(95 ,5,' '.$row['groupName'].' - '.$row["serialName"],1,0,'L');
+$pdf->Cell(40 ,5,number_format($row["unitPrice"],2),1,0,'R');
 
-$pdf->Cell(34 ,5,number_format($row["sellPrice"]),1,1,'R');//end of line
+$pdf->Cell(34 ,5,number_format($row["sellPrice"],2),1,1,'R');//end of line
 
 }
+
+
+
+ $tot=array_sum($sp);
+
+if (count($row)<=24)
+{
+    for ($i=0;$i< (24-count($row));$i++ )
+    {
+      $pdf->Cell(20 ,5,' ',1,0,'C');
+    $pdf->Cell(95 ,5,' ',1,0,'C');
+    $pdf->Cell(40 ,5,' ',1,0,'R');
+
+    $pdf->Cell(34 ,5,' ',1,1,'R');//end of line
+
+    }
+}
+
+
+
+
+
+
 $apostrophe = "'";
 $pdf->SetFont('Arial','',8);
 
@@ -243,13 +260,50 @@ $pdf->Cell(63 ,5,'VAT Exempt Sales     ',1,0,'L');
 $pdf->Cell(63 ,5,'Total Sales (VAT Inclusive)',1,0,'L');
 
 $pdf->Cell(63 ,5,'Add VAT',1,1,'L');//end of line
+
 $pdf->Cell(63 ,5,'Zero Rated Sales     ',1,0,'L');
 
 $pdf->Cell(63 ,5,'LESS SC/PWD/Disc',1,0,'L');
 $pdf->SetFont('Arial','B',8);
+
+
+
+
 $pdf->Cell(63 ,5,'TOTAL AMOUNT DUE',1,1,'L');//end of line
 
-$pdf->Cell(59 ,5,'',0,1);//end of line
+$pdf->SetFont('Arial','B',8);
+
+
+$pdf->Cell(63 ,-5,'',0,0, 'R');
+$pdf->Cell(63 ,-5,'',0,0, 'R');
+
+$pdf->Cell(63, -5, number_format($tot,2).' ', 0, 1, 'R');
+
+$pdf->SetFont('Arial','',8);
+$pdf->Cell(63 ,-5,' ',0,0, 'R');
+
+$pdf->Cell(63, -5, number_format($tot+($tot*$tax_value),2).' ', 0, 0, 'R');
+$pdf->Cell(63, -5, number_format($tot-($tot-($tot*$tax_value)),2).' ', 0, 1, 'R');
+
+
+
+$pdf->Cell(63 ,-5,number_format($tot-($tot*$tax_value),2).' ',0,0, 'R');
+$pdf->Cell(63 ,-5,number_format($tot-($tot-($tot*$tax_value)),2).' ',0,0, 'R');
+
+
+$pdf->Cell(63, -5, number_format($tot-($tot*$tax_value),2).' ', 0, 1, 'R');
+
+
+
+
+$pdf->Cell(59 ,20,'',0,1);//end of line
+
+
+
+
+
+
+
 
 $pdf->SetFont('Arial','B',8);
 
@@ -280,12 +334,11 @@ $pdf->Cell(20 ,3,'Customer'.$apostrophe.'s Signature Over Printed Name',0,1);
 
 
 $pdf->SetFont('Arial','B',8);
-$pdf->Cell(55 ,5,'',0,0);
-$pdf->Cell(20 ,7,'THIS CHARGE INVOICE SHALL BE VALID FOR FIVE (5) YEARS FROM THE DATE OF ATP.',0,1);
+$pdf->Cell(189 ,7,'THIS CHARGE INVOICE SHALL BE VALID FOR FIVE (5) YEARS FROM THE DATE OF ATP.',0,1,'R');
 
 
 
-/* $tot=array_sum($sp);*/
+ // $tot=array_sum($sp);
 
 
 /* $toxy =$tot* $tax_value;

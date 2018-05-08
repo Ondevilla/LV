@@ -111,8 +111,24 @@ global $conn;
       </div>
     </div>
   </div>
-    
+    <div class="row">
 
+    <div class="col-md-12">
+      <div class="input-group margin">
+                  <div class="input-group-btn">
+                    <button type="button" class="btn btn-block btn-primary btn-flat size-125px">TAX Status</button>
+                  </div>
+              <select name="invoice_tax"  class="form-control"  required>
+                <option value=" " Selected> </option>
+                <option value="1">Vatable</option>
+                <option value="0">Non Vatable</option>
+         
+              </select>
+                  
+      </div>
+    </div>
+
+</div>
   <div class="row">
     <div class="col-md-12">
     <center>
@@ -222,6 +238,7 @@ $(document).ready(function(){
           null, 
           null,
           null, 
+          null,
           { "orderSequence": [ "" ] }
         
       ]

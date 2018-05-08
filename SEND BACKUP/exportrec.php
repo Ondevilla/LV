@@ -53,7 +53,7 @@ echo '<tr>';
 // for ($i=0; $i <=($fieldcount-1); $i++) { 
 //   echo '<th style="width:2%">'.   $row[$i].'</td>';
 // }
-echo " <th style='width:100%;background-color:#3c8dbc;color:white;' colspan='6'><br><center>LIGHTVEND</center><br></th>";
+echo " <th style='width:100%;background-color:#3c8dbc;color:white;' colspan='7'><br><center>LIGHTVEND</center><br></th>";
 
 echo '</tr>';
    
@@ -66,7 +66,8 @@ echo "        <th style='width:150px'>INVOICE ID</th>
               <th style='width:150px'>DATE</th>
               <th style='width:150px'>DUE DATE</th> 
               <th style='width:150px'>HANDLED BY</th>
-              <th style='width:150px'>SELL PRICE</th>";
+              <th style='width:150px'>SELL PRICE</th>
+                  <th style='width:150px'>TAX</th>";
 
 echo '</tr>';
       
@@ -89,7 +90,17 @@ echo "        <td style='width:150px'><center>$row[0]</center></td>
               <td style='width:150px'>$row[3]</td> 
      
               <td style='width:150px'><center>$row[4]</center></td>
-              <td style='width:150px'>".number_format($row[5])."</td>";
+              <td style='width:150px;text-align:right;'>&nbsp;".number_format($row[5],2)."</td>";
+              
+                   if ($row[6]=='1')
+              {
+                echo "<td style='width:150px'><center>Vatable</center></td>";
+              }
+              else
+              {
+                echo "<td style='width:150px'><center>Non Vatable</center></td>";
+              }
+
 echo '</tr>';
       $sp[].=$row[5];
            
@@ -103,13 +114,13 @@ if($condition=='1')
 $total=array_sum($sp);
 
 
-echo"<tr><th style='width:100%;text-align:right;' colspan='6'><br></th></tr>";
+echo"<tr><th style='width:100%;text-align:right;' colspan='7'><br></th></tr>";
 echo '<tr>';
 // for ($i=0; $i <=($fieldcount-1); $i++) { 
 //   echo '<th style="width:2%">'.   $row[$i].'</td>';
 // }
 
-echo " <th style='width:100%;text-align:right;padding-right:50px;' colspan='6'><br> GRAND TOTAL : ".number_format($total)." PHP  <br><br></th>";
+echo " <th style='width:100%;text-align:right;padding-right:50px;' colspan='7'><br> GRAND TOTAL : ".number_format($total,2)." PHP  <br><br></th>";
 
 echo '</tr>';
 }

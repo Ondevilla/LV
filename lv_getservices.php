@@ -93,7 +93,7 @@ if (!empty($query_item))
 {
 
 
-  $xQx = "SELECT * FROM services WHERE isDeleted = '0'";
+  $xQx = "SELECT * FROM services WHERE isDeleted = '0' and services_id='". $_SESSION["assetsId_services"]."'";
   $query_invoice_services=mysqli_query($conn,$xQx);
 
 
@@ -102,51 +102,56 @@ if (!empty($query_item))
     {
     
 
+    $sorrow=mysqli_fetch_array($query_invoice_services);
+   $sell=$sorrow[2];
+
 ?>
 
               <br>
 
               </div>
-                <form  role="form" action="LV_submit.php" method="post"   enctype="multipart/form-data" >
-                  <div class="box box-primary" style="padding:10px;">
-<h6>Select an item</h6>
-              <?php
-              $namaiwa=0;
+                <form  role="form" action="LV_submit.php" method="post"   enctype="multipart/form-data"  class="box box-primary" style="padding:10px;">
+              
+<h6>Services</h6>
+               <input type="hidden" class="form-control"  name="serv_0" value="<?php echo $_SESSION['assetsId_services'];  ?>"   required>
 
-              $sellpricesss="";
-              while($rowsss=mysqli_fetch_array($query_invoice_services))
+ <div class="col-md-12">
+      <div class="input-group margin">
+                  <div class="input-group-btn">
+                    <button type="button" class="btn btn-block btn-primary btn-flat size-125px">Sell Price</button>
+                  </div>
+                  <input type="number" class="form-control"  name="serv_a" readonly onkeyup="count()"  id="serv_a"  value="<?php echo  $sell; ?>" required>
+      </div>
+    </div>
 
-              {
-               
-                echo ' 
-            <div class="col-md-6" style="padding:10px;  ">           
-<label class="chk1">
-  <input type="checkbox"   name="SN_services_a'.$namaiwa.'" value="'.$rowsss[0].'"> '.$rowsss[1].'</input>
-  <span class="checkmark"></span>
-</label>
-           
-          </div>      
+     <div class="col-md-12">
+      <div class="input-group margin">
+                  <div class="input-group-btn">
+                    <button type="button" class="btn btn-block btn-primary btn-flat size-125px">Quantity</button>
+                  </div>
+                  <input type="number" class="form-control"  name="serv_b" onkeyup="count()"  id="serv_b" required>
+      </div>
+    </div>
 
-               
+         <div class="col-md-12">
+      <div class="input-group margin">
+                  <div class="input-group-btn">
+                    <button type="button" class="btn btn-block btn-primary btn-flat size-125px">Unit</button>
+                  </div>
+                  <input type="text" class="form-control"   readonly value="LOT" disabled  required>
+      </div>
+    </div>
 
-                '
+     <div class="col-md-12">
+      <div class="input-group margin">
+                  <div class="input-group-btn">
+                    <button type="button" class="btn btn-block btn-primary btn-flat size-125px">Total Amount</button>
+                  </div>
+                  <input type="number" class="form-control" readonly id='chk' name="serv_c" >
+      </div>
+    </div>
 
-              ;
-
-              $namaiwa+=1;
-              }
-
-
-              $_SESSION['SN_services']=$namaiwa;
-
-
-              ?>
-                      <br>
-                  <br>
-
-                     <br>
-                        <br>
-                           <br>
+                  
                               <br>    </div>
                             <hr>
                
@@ -155,10 +160,10 @@ if (!empty($query_item))
 
 
 
-                 <div class="col-md-2" > 
+                 <div class="col-md-12" > 
                     <div class="input-group margin">
                                 <div class="input-group-btn">
-                                   <button type="submit" class="btn  btn-success btn-flat btn-block" id="sus"  style="opacity:1;" name="addItems_services">Submit</button>
+                                   <button type="submit" class="btn  btn-success btn-flat " id="susi"  style="opacity:0;float:right;" name="addItems_services">Submit</button>
                                 </div>
           
                   </div>
@@ -178,3 +183,20 @@ if (!empty($query_item))
 }
 ?>
 
+<script type="text/javascript">
+function count()
+{
+  var y =  document.getElementById('serv_a').value;
+  var x =  document.getElementById('serv_b').value;
+
+  document.getElementById('chk').value=x*y;
+  if (x>0)
+  {
+    document.getElementById('susi').style='opacity:1;float:right;';
+  }
+  else
+  {
+     document.getElementById('susi').style='opacity:0;float:right;';
+  }
+}  
+</script>

@@ -347,6 +347,21 @@ function  editgroup($a,$b,$c,$d,$e,$f,$g)
 
     $xQx .=" WHERE ";
     $xQx .=" groupid = '$g' ";
+
+
+        $xQx = "UPDATE items_ordered a ";
+        $xQx = " INNER JOIN assetstwo b ON ";       
+         $xQx = " a.assetsId = b.assetsId ";
+         $xQx = " INNER JOIN groups c ON  ";
+        $xQx = " c.groupid = b.itmTypeId ";
+
+
+     $xQx = " SET a.sellprice='$f' ";
+    $xQx = "  WHERE c.groupid='$g' AND a.isDeleted='0' ";
+    
+
+ 
+ 
     $query=mysqli_query($conn,$xQx);
     return  $query;
 }

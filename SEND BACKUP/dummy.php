@@ -188,8 +188,6 @@ $_SESSION["get_invoiceId"] = $invoice_id;
 
                         $clientId = $row["clientId"];
                         $bustypeId = $row["bustypeId"];
-                        $get_dr = $row["dr"];
-                        $tax= $row["isVatable"];
 
                       }
 
@@ -204,9 +202,7 @@ $_SESSION["get_invoiceId"] = $invoice_id;
 
                         $clientName = $row["clientName"];
                         $checkVat = $row["tax_status"];
-                        $get_address = $row["address"];
-                        $get_tin = $row["tin"];
-                        $get_pwd = $row["osca_pwd_no"];
+
                       }
 
 $_SESSION["checkVat"] = $checkVat;
@@ -246,15 +242,9 @@ $cName = $_SESSION["cName"];
      <center>
 
 
-<img src="fpdf17/cavitech.png" style="width: 400px;" class="img-fluid">
+<img src="fpdf17/cavitech.png" style="width: 250px;" class="img-fluid">
 
        </center>
-
-
-       <center><h5>Block 3A LOT 4 DIAMOND ST., WESTRIDGE RESIDENCES, BRGY. SALAWAG, DASMARINAS CITY, CAVITE 4114</h5></center>
-       <center><h5>TEl:NO (02)735-7511/(02)871-4105/(02)985-8599/(02)806-8469/1F(046)450-5942</h5></center>
-        <center><h5>VAT REG. TIN:008-934-715-000/www.cavitech.ph</h5></center>      
-
 
 
         </div>
@@ -264,119 +254,56 @@ $cName = $_SESSION["cName"];
 
         <!-- /.col -->
       </div>
-
-      <br>
       <!-- info row -->
-      <div class="invoice-info">
-        <div class="col-sm-8 invoice-col">
-          <b><a style="font-size: 24px; color: black;">CHARGE INVOICE</a></b>
-
-
-        </div>
+      <div class="row invoice-info">
         <div class="col-sm-4 invoice-col">
-          <b><a style="font-size: 24px; color: black;">NO</a></b>&nbsp;&nbsp;
-          <a style="font-size: 24px; color: black;"><?php echo $invoice_id; ?></a>
-
+          From
+          <address>
+            <strong>Lightvend Inc.</strong><br>
+            123 Boni. Ave., Barangka Drive<br>
+            Mandaluyong, 1550<br>
+            Phone: (804) 123-5432<br>
+            Email: lightvend@gmail.com
+          </address>
         </div>
+        <!-- /.col -->
+        <div class="col-sm-4 invoice-col">
+          To
+          <address>
+
+  <?php 
+
+ $xQx_invoices = "SELECT * FROM invoices WHERE invoiceId = $invoice_id AND isDeleted = '0'";
+  $query_invoices=mysqli_query($conn,$xQx_invoices);         
+
+
+                      while($row=mysqli_fetch_array($query_invoices))
+
+                      { 
+  ?>
+            <strong><?php echo $cName; ?></strong><br>
+            123 Boni. Ave., Barangka Drive<br>
+            Mandaluyong, 1550<br>
+            Phone: (804) 123-5432<br>
+            Email: lightvend@gmail.com
+          </address>
+        </div>
+        <!-- /.col -->
+        <div class="col-sm-4 invoice-col">
+          <b>Invoice #<?php echo $row["invoiceStatId"]; ?></b><br>
+          <br>
+          <b>Order ID:</b> <?php echo $row["invoiceId"]; ?><br>
+          <b>Payment Due:</b> <?php echo $row["due_date"]; ?><br>
+          
+        </div>
+        <!-- /.col -->
       </div>
-
-
-
-<div class="row">
-
-        <div class="col-xs-12 table-responsive">
-          <table class="table">
-<tr>
-
-<td style="width: 150px;">SOLD TO</td>
-
-<td style="width: 400px;"><?php echo $clientName ?></td>
-
-<td style="width: 150px;"></td>
-
-<td></td>
-
-</tr>
-
-<tr>
-
-<td style="width: 150px;">ADDRESS</td>
-
-<td><?php
-
-
-$first=substr($get_address, 0,40);
-
-
- echo $first;?></td>
-
-<td style="width: 150px;">TERMS</td>
-
-<td>&#9634; CASH &#9634; CHECK</td>
-
-</tr>
-
-
-
-<tr>
-
-<td style="width: 150px;"></td>
-
-<td><?php
-
-
-
-$last=substr($get_address, 40);
-
- echo $last;?></td></td>
-
-<td style="width: 150px;">P.O. NO</td>
-
-<td><?php echo $get_dr; ?> </td>
-
-</tr>
-
-
-<tr>
-
-<td style="width: 150px;">BUSINESS NAME STYLE </td>
-
-<td><?php echo $busName; ?></td>
-
-<td style="width: 150px;">TIN</td>
-
-<td><?php echo $get_tin; ?></td>
-
-</tr>
-
-
-<tr>
-
-<td style="width: 150px;">OSCA/PPWD ID NO </td>
-
-<td><?php echo $get_pwd; ?></td>
-
-<td style="width: 150px;">CARDHOLDER'S SIGNATURE</td>
-
-<td>________________</td>
-
-</tr>
-
-          </table>
-
-        </div>
-
-
-
-
-
-
-
-</div>
-
-
       <!-- /.row -->
+<?php 
+$_SESSION["invoice_vat"] = $row["isVatable"]; //for INVOICE VAT
+}
 
+?>
 
 
 
@@ -387,12 +314,9 @@ $last=substr($get_address, 40);
             <thead>
             <tr>
   
-              <th>QTY</th>
-              <th>DESCRIPTION</th>
-              <th>UNIT PRICE</th>
-              <th>AMOUNT</th>
-
-
+              <th>Product</th>
+              <th>Serial #</th>
+              <th>Amount</th>
             </tr>
             </thead>
             <tbody>
@@ -401,12 +325,8 @@ $last=substr($get_address, 40);
 
 
             <?php 
- $xQx_items_ordered = "SELECT * FROM items_ordered WHERE invoiceId = '$invoice_id'";
-
-/* $xQx_items_ordered = "SELECT g.`groupName`,a2.`serialName`,g.`sellPrice` FROM assetstwo a2 INNER JOIN groups g ON g.`groupid`=a2.`itmTypeId` INNER JOIN items_ordered id ON id.`assetName`=a2.`serialName` INNER JOIN invoices i ON i.`invoiceId` = id.`invoiceId` WHERE i.`invoiceId`='".  $get_value ."' AND id.`isDeleted`='0'  GROUP BY a2.`serialName`;
+ $xQx_items_ordered = "SELECT g.`groupName`,a2.`serialName`,g.`sellPrice` FROM assetstwo a2 INNER JOIN groups g ON g.`groupid`=a2.`itmTypeId` INNER JOIN items_ordered id ON id.`assetName`=a2.`serialName` INNER JOIN invoices i ON i.`invoiceId` = id.`invoiceId` WHERE i.`invoiceId`='".  $get_value ."' AND id.`isDeleted`='0'  GROUP BY a2.`serialName`;
 ";
-
-*/
   $query_items_ordered=mysqli_query($conn,$xQx_items_ordered);         
 
 
@@ -417,11 +337,9 @@ $last=substr($get_address, 40);
             <tr>
 
             
-              <td><?php echo $row["quantity"]; ?></td>
-              <td><?php echo $row["assetName"]; ?></td>
+              <td><?php echo $row["groupName"]; ?></td>
+              <td><?php echo $row["serialName"]; ?></td>
               <td><?php echo number_format($row["sellPrice"]); ?></td>
-              <td><?php echo number_format($row["sellPrice"]); ?></td>
-
             </tr>
 
           <?php 
@@ -508,8 +426,8 @@ $spri=array_sum($sp);
 
 
 
-$checkVat_new = $tax;
-if($checkVat_new ==  "1")
+$checkVat_new = $_SESSION["checkVat"];
+if($checkVat_new ==  "Vatable")
 
 {
 
@@ -551,39 +469,10 @@ $tot=array_sum($sp);
 
                  
              
-        $xQx_select = "SELECT * FROM invoices WHERE invoiceId = '$invoice_id' AND isDeleted = '0'";
-        $query_select=mysqli_query($conn,$xQx_select);
+
                 
-
-                      while($row=mysqli_fetch_aSSOC($query_select))
-
-                      {  
-
-
-
-/*$sp[].=$row["sellPrice"];*/
-
-(int)$catch_balance = $row["balance"];
-
-
-}
-
-
-if ( 0 < $catch_balance)
-{
-  $totx = $catch_balance;
-}
-else
-{
-
                   $totx =  $tot ;
                 echo number_format($totx);
-
-
-}
-
-
-
                 ?></th>
 
 
@@ -635,7 +524,7 @@ else
                   <div class='input-group-btn'>
                   <button type='button' class='btn btn-block btn-primary btn-flat size-200px'><b>Total Amount</b></button>
                   </div>
-                  <input type="hidden" name="total_amount" value='<?php echo number_format($totx);?>'>
+                  <input type="hidden" name="total_amount" value='<?php echo $totx;?>'>
                   <input type='text' class='form-control'     style='' value='<?php echo number_format($totx);?>' disabled>
                   </div>
       <br>
@@ -643,7 +532,7 @@ else
                   <div class='input-group-btn'>
                   <button type='button' class='btn btn-block btn-primary btn-flat size-200px'><b>Enter Payment Amount</b></button>
                   </div>
-                  <input type='number' class='form-control' name = "paid_amount"  style=''  min="1" required>
+                  <input type='number' class='form-control' name = "paid_amount"  style='' min='<?php echo (int)$totx;?>'  required>
                   </div>
 
         </div>

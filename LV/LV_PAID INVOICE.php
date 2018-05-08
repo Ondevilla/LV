@@ -1,6 +1,10 @@
 <div class="wrapper" style="background-color:transparent;">
 
-<div><p>GENERATED INVOICES</p></div>
+
+
+<div><p>PAID INVOICES</p></div>
+
+
 
 <style>
   .switch {
@@ -85,10 +89,10 @@ $(document).ready(function(){
       "aoColumns": [
           null,
           null, 
-
-          null,
           null, 
-            null, 
+          null,
+          null,
+             null,
           { "orderSequence": [ "" ] }
         
       ]
@@ -133,11 +137,11 @@ $(document).ready(function(){
 
 <div class="box box-primary" style="padding: 20px;">
 <?php
-tbl_invoice_generated();
+tbl_invoice_paid();
 ?>
-
-
 </div>
+
+
 
 </div>
 

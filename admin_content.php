@@ -42,7 +42,7 @@ if(empty($_SESSION['fn']))
 
 ?>
     <?php
-    if (isset($_GET['x']) && (strpos($_GET['x'], 'STOCK') !== false) )
+    if (isset($_GET['x']) && ((strpos($_GET['x'], 'STOCK') == true)) )
     {
 
         $x1=count($sub_sidebar_label);
@@ -57,7 +57,7 @@ if(empty($_SESSION['fn']))
               }
           }
     }
-    elseif (isset($_GET['x']) && (strpos($_GET['x'], 'INVOICE') !== false) )
+    elseif (isset($_GET['x']) && ((strpos($_GET['x'], 'INVOICE') == true)) )
     {
 
         $x1=count($sub_sidebar_label1);

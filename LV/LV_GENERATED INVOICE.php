@@ -1,6 +1,6 @@
 <div class="wrapper" style="background-color:transparent;">
 
-<div><p>MANAGE RECEIVABLES</p></div>
+<div><p>GENERATED INVOICES</p></div>
 
 <style>
   .switch {
@@ -78,19 +78,18 @@ input::-webkit-inner-spin-button {
 }
 
 </style>
-  
-
+     
 <script>
 $(document).ready(function(){
-    $('#RECEIVABLES').DataTable({
+    $('#ManageClients').DataTable({
       "aoColumns": [
           null,
+          null, 
+   null, 
           null,
           null, 
-          null,
-           null,
-          null
-      
+            null, 
+          { "orderSequence": [ "" ] }
         
       ]
   } );
@@ -101,8 +100,15 @@ $(document).ready(function(){
     });
 
 
-
 });
+
+
+
+
+
+
+
+
 
 
 </script>
@@ -111,24 +117,27 @@ $(document).ready(function(){
 
     
 
+<!--     <div class="rows">
+            <div class="col-md-12" id="addbtn">
+                <button type="button"  class="btn btn-block btn-success btn-flat">ADD</button>
+            </div>
+    </div> -->
 
-<!-- <div id="panel">
-<?php
+<div id="panel">
 
-?>
 </div>
- -->
+
 
 <br>
+<br>
 
-
+<div class="box box-primary" style="padding: 20px;">
 <?php
-tbl_receivables();
+tbl_invoice_generated();
 ?>
 
 
-
-
+</div>
 
 </div>
 

@@ -794,74 +794,48 @@ $SerN[]="";
 
 
 
+
+
+
+
+
+
 if (isset($_POST['addItems_services']))
 {
 
     
         //use assetsID to and insert items_ordered
-        $range=$_SESSION['SN_services'];
+       
 
 
-        for ($i=0; $i <$range ; $i++) { 
-        $SN_services_a="SN".$i;
-
-        if(!empty($_POST[$SN_services_a]))
-        {
-            $SerN_services[]=$_POST[$SN_services_a];
-        }
-        else
-        {
-
-        }
-        }
+    
 
 
 
 
-        $invoiceId_submit_services = $_SESSION["invoiceId_submit"];
-        for ($i=0; $i < count($SerN_services) ; $i++) { 
+      echo   $a1=$_POST['serv_0'];
+      echo  $a2=$_POST['serv_a'];
+      echo  $a3=$_POST['serv_b'];
+      echo  $a4=$_POST['serv_c'];
+       echo $invoiceId_submit_services = $_SESSION["invoiceId_submit"];
 
 
+    date_default_timezone_set('Asia/manila');
+        $D=date("Y-m-d");
+                  
+        date_default_timezone_set('Asia/manila');
+        $T=date("g:i:s A");
+       
 
-        $rowup=mysqli_fetch_array(mysqli_query($conn,'SELECT * FROM services  WHERE services_id="'.$SerN_services[$i].'" ')); 
-
-        $xQx_insert = "INSERT INTO invoice_services (invoiceId,services_id,services_name) VALUES ('$invoiceId_submit_services','$SerN_services[$i]','$rowup[1]')";
+        $xQx_insert = "INSERT INTO invoice_services (`invoiceId`,`services_id`,`quantity`,`sellprice`,`amount`,`dateadded`) VALUES ('$invoiceId_submit_services','$a1','$a3','$a2','$a4','$D')";
         $query_insert=mysqli_query($conn,$xQx_insert);
 
-        }
-        //   $xQx = "SELECT assetName,quantity FROM assetstwo WHERE assetsId = '$assetsId'";
-        //   $query=mysqli_query($conn,$xQx);
-
-
-        //             while($row = mysqli_fetch_array($query))
-
-        //                 { 
-
-        //                     $quantity = $row["quantity"];
-        //                     $assetName = $row["assetName"];
-
-        //                 }
-
-        // $item_order = (int)$quantity - $itemrange_order;
-
-        //  $unitPrice_ordered = $_SESSION["unitPrice"];
-        // // $sellPrice_ordered = $_SESSION["sellPrice"];
-
-        // $invoiceId_submit = $_SESSION["invoiceId_submit"];
-
-
-
-        //   $xQx_insert = "INSERT INTO items_ordered (assetsId,  unitPrice, sellPrice, invoiceId,isDeleted) VALUES ('$assetsId','$unitPrice_ordered','$sell','$invoiceId_submit','0')";
-        //   $query_insert=mysqli_query($conn,$xQx_insert);
-
-        //   $xQx_update = "UPDATE assetstwo SET quantity = $item_order WHERE assetsId = $assetsId";
-        //   $query_update=mysqli_query($conn,$xQx_update);
+  
 
 
 
 
-
-        }
+}
 
 
 ?>
@@ -873,8 +847,8 @@ if (isset($_POST['addItems_services']))
     <?php
 
 
-$_SESSION['SN_services']='0';
-$SerN_services[]="";
+
+
 
 
 

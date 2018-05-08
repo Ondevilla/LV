@@ -113,7 +113,7 @@ $pdf->Cell(54 ,5,'________________________________',0,1);//end of line
 
 {
 
-					$clientId = $row["clientId"];
+          $clientId = $row["clientId"];
 }
 
 
@@ -125,13 +125,13 @@ $pdf->Cell(54 ,5,'________________________________',0,1);//end of line
                       while($row=mysqli_fetch_array($query_clientInfo))
 
 {
-						$clientName = $row["clientName"];
-						$contactPerson = $row["contactPerson"];
-						$address = $row["address"];
-						$email = $row["email"];	
+            $clientName = $row["clientName"];
+            $contactPerson = $row["contactPerson"];
+            $address = $row["address"];
+            $email = $row["email"]; 
             $tax = $row["tax_status"]; 
 
-				
+        
 
 
 
@@ -194,25 +194,17 @@ $pdf->Cell(189 ,10,'',0,1);//end of line*/
 //invoice contents
 $pdf->SetFont('Arial','B',12);
 
-$pdf->Cell(30 ,5,'QTY',1,0,'C');
+$pdf->Cell(100 ,5,'Product',1,0);
 
-$pdf->Cell(85 ,5,'DESCRIPTION',1,0,'C');
-
-$pdf->Cell(40 ,5,'UNIT PRICE',1,0,'C');//end of line
-
-
-
-$pdf->Cell(34 ,5,'AMOUNT',1,1,'C');//end of line
-
+$pdf->Cell(55 ,5,'Serial #',1,0);
+$pdf->Cell(34 ,5,'Amount',1,1);//end of line
 
 $pdf->SetFont('Arial','',12);
 
 //Numbers are right-aligned so we give 'R' after new line parameter
 
 $sp="";
-/*  $xQx_items = "SELECT g.`groupName`,a2.`serialName`,g.`sellPrice` FROM assetstwo a2 INNER JOIN groups g ON g.`groupid`=a2.`itmTypeId` INNER JOIN items_ordered id ON id.`assetName`=a2.`serialName` INNER JOIN invoices i ON i.`invoiceId` = id.`invoiceId` WHERE i.`invoiceId`='".$invoiceId."'    AND id.`isDeleted`='0' GROUP BY a2.`serialName` ";*/
-  $xQx_items = "SELECT * FROM items_ordered WHERE invoiceId = '$invoiceId'";
-
+  $xQx_items = "SELECT g.`groupName`,a2.`serialName`,g.`sellPrice` FROM assetstwo a2 INNER JOIN groups g ON g.`groupid`=a2.`itmTypeId` INNER JOIN items_ordered id ON id.`assetName`=a2.`serialName` INNER JOIN invoices i ON i.`invoiceId` = id.`invoiceId` WHERE i.`invoiceId`='".$invoiceId."'    AND id.`isDeleted`='0' GROUP BY a2.`serialName` ";
   $query_items=mysqli_query($conn,$xQx_items);         
 
 
@@ -222,71 +214,17 @@ $sp="";
 
   
 /*$sp[].=$row["sellPrice"];*/
-$pdf->Cell(30 ,5,$row["quantity"],1,0,'C');
-$pdf->Cell(85 ,5,$row["assetName"],1,0,'C');
-$pdf->Cell(40 ,5,number_format($row["unitPrice"]),1,0,'R');
+$pdf->Cell(100 ,5,$row["groupName"],1,0);
+$pdf->Cell(55 ,5,$row["serialName"],1,0);
 
 $pdf->Cell(34 ,5,number_format($row["sellPrice"]),1,1,'R');//end of line
 
 }
-$apostrophe = "'";
-$pdf->SetFont('Arial','',8);
 
-$pdf->Cell(63 ,5,'VATable Sales     ',1,0,'L');
-
-$pdf->Cell(63 ,5,'VAT Amount',1,0,'L');
-
-$pdf->Cell(63 ,5,'Total Sales',1,1,'L');//end of line
-
-$pdf->Cell(63 ,5,'VAT Exempt Sales     ',1,0,'L');
-
-$pdf->Cell(63 ,5,'Total Sales (VAT Inclusive)',1,0,'L');
-
-$pdf->Cell(63 ,5,'Add VAT',1,1,'L');//end of line
-$pdf->Cell(63 ,5,'Zero Rated Sales     ',1,0,'L');
-
-$pdf->Cell(63 ,5,'LESS SC/PWD/Disc',1,0,'L');
-$pdf->SetFont('Arial','B',8);
-$pdf->Cell(63 ,5,'TOTAL AMOUNT DUE',1,1,'L');//end of line
-
-$pdf->Cell(59 ,5,'',0,1);//end of line
-
-$pdf->SetFont('Arial','B',8);
-
-$pdf->Cell(20 ,5,'CONDITIONS:',0,0);
-$pdf->SetFont('Arial','',8);
-$pdf->Cell(110 ,5,'All items Described Above will remain to be properties of CAVITECH',0,0);
-$pdf->Cell(20 ,3,'Prepared by : _________________________',0,1);
-
-
-
-$pdf->Cell(130 ,5,'SOLUTIONS INC. unitl fully paid for. All unpaid portions will bbe charged  a penalty',0,0);
-$pdf->Cell(20 ,3,'Checked by : _________________________',0,1);
-$pdf->Cell(130 ,5,'fee of 5% per month basis. The buyer Expressly agrees to submit themselves  to the',0,0);
-$pdf->Cell(20 ,3,'Approved by : _________________________',0,1);
-$pdf->Cell(130 ,5,' jurisdiction of any court in any city of Cavite and Metro Manila at the option  of CAVITECH',0,0);
-$pdf->Cell(20 ,3,'Released by : _________________________',0,1);
-$pdf->Cell(130 ,5,' SOLUTION INC. and assumes a minimum of 25% of total value of the invoice represent-',0,1);
-$pdf->Cell(130 ,3,'-ing attorney'.$apostrophe.'s files excluding collections fees and court expenses.',0,1);
-
-
-
-
-$pdf->Cell(130 ,5,'',0,0);
-$pdf->Cell(20 ,3,'____________________________________',0,1);
-$pdf->Cell(133 ,5,'',0,0);
-$pdf->Cell(20 ,3,'Customer'.$apostrophe.'s Signature Over Printed Name',0,1);
-
-
-
-$pdf->SetFont('Arial','B',8);
-$pdf->Cell(55 ,5,'',0,0);
-$pdf->Cell(20 ,7,'THIS CHARGE INVOICE SHALL BE VALID FOR FIVE (5) YEARS FROM THE DATE OF ATP.',0,1);
-
+$pdf->Cell(189 ,10,'',0,1);
 
 
 /* $tot=array_sum($sp);*/
-
 
 /* $toxy =$tot* $tax_value;
  $totx =  $tot ;

@@ -145,16 +145,6 @@ if(isset($_POST["editService"]))
 }
 
 
-    if(!empty($_POST["editServices_remarks"]))
-{
-  $remarks = $_POST["editServices_remarks"];
-
-        $xQx_update = "UPDATE services SET `remarks` = '$remarks' WHERE services_id = '$get_id'";
-        $query_update=mysqli_query($conn,$xQx_update);
-  
-}
-
-
 ?>
  <script>   
 
@@ -231,10 +221,10 @@ if(isset($_POST["addService"]))
 
 $service_name = $_POST["service_name"];
 $service_price = $_POST["service_price"];
-$service_remarks = $_POST["service_remarks"];
 
 
-        $xQx_insert = "INSERT INTO services (services_name, sell_price, remarks ) VALUES ('$service_name','$service_price','$service_remarks')";
+
+        $xQx_insert = "INSERT INTO services (services_name, sell_price, unit, quantity, isDeleted) VALUES ('$service_name','$service_price','LOT','1','0')";
         $query_insert=mysqli_query($conn,$xQx_insert);
 
 

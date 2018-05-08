@@ -189,6 +189,7 @@ $_SESSION["get_invoiceId"] = $invoice_id;
                         $clientId = $row["clientId"];
                         $bustypeId = $row["bustypeId"];
                         $get_dr = $row["dr"];
+                        $tax= $row["isVatable"];
 
                       }
 
@@ -301,11 +302,17 @@ $cName = $_SESSION["cName"];
 
 <td style="width: 150px;">ADDRESS</td>
 
-<td><?php echo $get_address;?></td>
+<td><?php
+
+
+$first=substr($get_address, 0,40);
+
+
+ echo $first;?></td>
 
 <td style="width: 150px;">TERMS</td>
 
-<td> ____ CASH ____ CHECK</td>
+<td>&#9634; CASH &#9634; CHECK</td>
 
 </tr>
 
@@ -315,7 +322,13 @@ $cName = $_SESSION["cName"];
 
 <td style="width: 150px;"></td>
 
-<td></td>
+<td><?php
+
+
+
+$last=substr($get_address, 40);
+
+ echo $last;?></td></td>
 
 <td style="width: 150px;">P.O. NO</td>
 
@@ -345,7 +358,7 @@ $cName = $_SESSION["cName"];
 
 <td style="width: 150px;">CARDHOLDER'S SIGNATURE</td>
 
-<td> ________________</td>
+<td>________________</td>
 
 </tr>
 
@@ -495,8 +508,8 @@ $spri=array_sum($sp);
 
 
 
-$checkVat_new = $_SESSION["checkVat"];
-if($checkVat_new ==  "Vatable")
+$checkVat_new = $tax;
+if($checkVat_new ==  "1")
 
 {
 
@@ -593,7 +606,7 @@ $tot=array_sum($sp);
                   <div class='input-group-btn'>
                   <button type='button' class='btn btn-block btn-primary btn-flat size-200px'><b>Total Amount</b></button>
                   </div>
-                  <input type="hidden" name="total_amount" value='<?php echo $totx;?>'>
+                  <input type="hidden" name="total_amount" value='300'>
                   <input type='text' class='form-control'     style='' value='<?php echo number_format($totx);?>' disabled>
                   </div>
       <br>
@@ -601,7 +614,7 @@ $tot=array_sum($sp);
                   <div class='input-group-btn'>
                   <button type='button' class='btn btn-block btn-primary btn-flat size-200px'><b>Enter Payment Amount</b></button>
                   </div>
-                  <input type='number' class='form-control' name = "paid_amount"  style='' min='<?php echo (int)$totx;?>'  required>
+                  <input type='number' class='form-control' name = "paid_amount"  style=''  min="1" required>
                   </div>
 
         </div>

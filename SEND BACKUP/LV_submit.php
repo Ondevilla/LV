@@ -190,7 +190,7 @@ $d = $_POST['invoice_d'];
 $e = $_POST['invoice_e'];
 $f = $_POST['invoice_f'];
 $dr = $_POST['invoice_dr'];
-
+$invoice_vat = $_POST["invoice_tax"];
 
 
 
@@ -212,14 +212,14 @@ $a3 = $row[2];
 
 
 
-$xQx = "INSERT INTO invoices(invoiceStatId , clientId, clientName, date_created ,due_date ,remarks ,isDeleted,Status,dr,bustypeName, bustypeId)VALUES ('$a','$b','$a1','$d','$e','$f','0','0','$dr','$a3','$a2')";
+$xQx = "INSERT INTO invoices(invoiceStatId , clientId, clientName, date_created ,due_date ,remarks ,isDeleted,Status,dr,bustypeName, bustypeId, isVatable)VALUES ('$a','$b','$a1','$d','$e','$f','0','0','$dr','$a3','$a2','$invoice_vat')";
         $query=mysqli_query($conn,$xQx);
     }
 //-----------------------------------------------
     ?>
-    <script>   
+   <script>   
     window.location.href="admin.php?x=NEW%20INVOICE";
-    </script>
+    </script> 
 <?php
 }
 
@@ -470,6 +470,48 @@ $catType = $_POST["catType"];
 }
 
 
+
+
+
+if (isset($_POST['add_services']))
+{
+
+
+
+$services = $_POST["services"];
+
+  $xQx_insert = "INSERT INTO services (services_name, isDeleted) VALUES ('$services','0')";
+  $query_insert=mysqli_query($conn,$xQx_insert);
+
+?>
+    <script>   
+    window.location.href="admin.php?x=MAINTENANCE";
+    </script>
+
+    <?php
+
+}
+
+
+
+if (isset($_POST['del_services']))
+{
+
+
+
+$services = $_POST["delservices"];
+
+  $xQx_insert = "UPDATE services SET isDeleted = '1' WHERE services_id = '$services'";
+  $query_insert=mysqli_query($conn,$xQx_insert);
+
+?>
+    <script>   
+    window.location.href="admin.php?x=MAINTENANCE";
+    </script>
+
+    <?php
+
+}
 
 
 
@@ -752,8 +794,87 @@ $SerN[]="";
 
 
 
+if (isset($_POST['addItems_services']))
+{
+
+    
+        //use assetsID to and insert items_ordered
+        $range=$_SESSION['SN_services'];
 
 
+        for ($i=0; $i <$range ; $i++) { 
+        $SN_services_a="SN".$i;
+
+        if(!empty($_POST[$SN_services_a]))
+        {
+            $SerN_services[]=$_POST[$SN_services_a];
+        }
+        else
+        {
+
+        }
+        }
+
+
+
+
+        $invoiceId_submit_services = $_SESSION["invoiceId_submit"];
+        for ($i=0; $i < count($SerN_services) ; $i++) { 
+
+
+
+        $rowup=mysqli_fetch_array(mysqli_query($conn,'SELECT * FROM services  WHERE services_id="'.$SerN_services[$i].'" ')); 
+
+        $xQx_insert = "INSERT INTO invoice_services (invoiceId,services_id,services_name) VALUES ('$invoiceId_submit_services','$SerN_services[$i]','$rowup[1]')";
+        $query_insert=mysqli_query($conn,$xQx_insert);
+
+        }
+        //   $xQx = "SELECT assetName,quantity FROM assetstwo WHERE assetsId = '$assetsId'";
+        //   $query=mysqli_query($conn,$xQx);
+
+
+        //             while($row = mysqli_fetch_array($query))
+
+        //                 { 
+
+        //                     $quantity = $row["quantity"];
+        //                     $assetName = $row["assetName"];
+
+        //                 }
+
+        // $item_order = (int)$quantity - $itemrange_order;
+
+        //  $unitPrice_ordered = $_SESSION["unitPrice"];
+        // // $sellPrice_ordered = $_SESSION["sellPrice"];
+
+        // $invoiceId_submit = $_SESSION["invoiceId_submit"];
+
+
+
+        //   $xQx_insert = "INSERT INTO items_ordered (assetsId,  unitPrice, sellPrice, invoiceId,isDeleted) VALUES ('$assetsId','$unitPrice_ordered','$sell','$invoiceId_submit','0')";
+        //   $query_insert=mysqli_query($conn,$xQx_insert);
+
+        //   $xQx_update = "UPDATE assetstwo SET quantity = $item_order WHERE assetsId = $assetsId";
+        //   $query_update=mysqli_query($conn,$xQx_update);
+
+
+
+
+
+        }
+
+
+?>
+
+    <script>   
+    window.location.href="admin.php?x=NEW%20INVOICE";
+    </script>
+
+    <?php
+
+
+$_SESSION['SN_services']='0';
+$SerN_services[]="";
 
 
 
